@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D1F850528D9BFB0007BD03A /* MemoGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F850428D9BFB0007BD03A /* MemoGameModel.swift */; };
+		2D1F850728D9BFDA007BD03A /* MemoGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F850628D9BFDA007BD03A /* MemoGameViewModel.swift */; };
 		2D64A45628D3AAFD00F6AECD /* SUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A45528D3AAFD00F6AECD /* SUIApp.swift */; };
-		2D64A45828D3AAFD00F6AECD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A45728D3AAFD00F6AECD /* ContentView.swift */; };
+		2D64A45828D3AAFD00F6AECD /* MemoGameContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A45728D3AAFD00F6AECD /* MemoGameContentView.swift */; };
 		2D64A45A28D3AAFE00F6AECD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D64A45928D3AAFE00F6AECD /* Assets.xcassets */; };
 		2D64A45D28D3AAFE00F6AECD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D64A45C28D3AAFE00F6AECD /* Preview Assets.xcassets */; };
 		2D64A46728D3AAFE00F6AECD /* SUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A46628D3AAFE00F6AECD /* SUITests.swift */; };
@@ -34,9 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D1F850428D9BFB0007BD03A /* MemoGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoGameModel.swift; sourceTree = "<group>"; };
+		2D1F850628D9BFDA007BD03A /* MemoGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoGameViewModel.swift; sourceTree = "<group>"; };
 		2D64A45228D3AAFD00F6AECD /* SUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D64A45528D3AAFD00F6AECD /* SUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIApp.swift; sourceTree = "<group>"; };
-		2D64A45728D3AAFD00F6AECD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2D64A45728D3AAFD00F6AECD /* MemoGameContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoGameContentView.swift; sourceTree = "<group>"; };
 		2D64A45928D3AAFE00F6AECD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D64A45C28D3AAFE00F6AECD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2D64A46228D3AAFE00F6AECD /* SUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +75,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D1F850328D9BF89007BD03A /* Memo game */ = {
+			isa = PBXGroup;
+			children = (
+				2D64A45728D3AAFD00F6AECD /* MemoGameContentView.swift */,
+				2D1F850428D9BFB0007BD03A /* MemoGameModel.swift */,
+				2D1F850628D9BFDA007BD03A /* MemoGameViewModel.swift */,
+			);
+			path = "Memo game";
+			sourceTree = "<group>";
+		};
 		2D64A44928D3AAFD00F6AECD = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				2D64A45528D3AAFD00F6AECD /* SUIApp.swift */,
-				2D64A45728D3AAFD00F6AECD /* ContentView.swift */,
+				2D1F850328D9BF89007BD03A /* Memo game */,
 				2D64A45928D3AAFE00F6AECD /* Assets.xcassets */,
 				2D64A45B28D3AAFE00F6AECD /* Preview Content */,
 			);
@@ -257,7 +271,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D64A45828D3AAFD00F6AECD /* ContentView.swift in Sources */,
+				2D64A45828D3AAFD00F6AECD /* MemoGameContentView.swift in Sources */,
+				2D1F850528D9BFB0007BD03A /* MemoGameModel.swift in Sources */,
+				2D1F850728D9BFDA007BD03A /* MemoGameViewModel.swift in Sources */,
 				2D64A45628D3AAFD00F6AECD /* SUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
