@@ -5,14 +5,14 @@
 //  Created by F1xTeoNtTsS on 20.09.2022.
 //
 
-struct MemoGameModel<CardContent: Equatable> {
+struct MemoGameModel<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card>
-    private var choosenOneCard: Card?
+    private var chosenOneCardIndex: Int?
     
-    init(numberOfPairsOfCards: Int, createCardContent: (Int) -> CardContent) {
+    init(numberOfCardsPairs: Int, createCardContent: (Int) -> CardContent) {
         self.cards = Array<Card>()
         
-        for index in 0..<numberOfPairsOfCards {
+        for index in 0..<numberOfCardsPairs {
             let content = createCardContent(index)
             cards.append(Card(content: content, id: index * 2))
             cards.append(Card(content: content, id: index * 2 + 1))
@@ -21,22 +21,40 @@ struct MemoGameModel<CardContent: Equatable> {
     }
     
     mutating func choose(_ card: Card) {
-        if let index = self.cards.firstIndex(where: { $0.id == card.id }) {
-            self.cards[index].isFaceUp = !self.cards[index].isFaceUp
+        if let chosenIndex = self.cards.firstIndex(where: { $0.id == card.id }),
+           !self.cards[chosenIndex].isFaceUp,
+           !self.cards[chosenIndex].isMatched {
             
-            if choosenOneCard == nil {
-                self.choosenOneCard = self.cards[index]
-            } else {
-                if choosenOneCard?.content == self.cards[index].content {
-                    self.removeCards(card: self.cards[index])
+            if let potentialMatchIndex = self.chosenOneCardIndex {
+                if self.cards[chosenIndex].content == self.cards[potentialMatchIndex].content {
+                    self.cards[chosenIndex].isMatched = true
+                    self.cards[potentialMatchIndex].isMatched = true
                 }
+                self.chosenOneCardIndex = nil
+            } else {
+                for index in self.cards.indices {
+                    self.cards[index].isFaceUp = false
+                }
+                self.chosenOneCardIndex = chosenIndex
             }
-            
+            self.cards[chosenIndex].isFaceUp.toggle()
         }
     }
     
-    mutating func removeCards(card: Card) {
-        self.cards.removeAll(where: { $0.content == card.content })
+    mutating func changeTheme() {
+        
+    }
+    
+    mutating func shuffleCards() {
+        self.cards = self.cards.shuffled()
+        self.refreshCards()
+    }
+    
+    mutating func refreshCards() {
+        for index in self.cards.indices {
+            self.cards[index].isFaceUp = false
+            self.cards[index].isMatched = false
+        }
     }
     
     struct Card: Identifiable {

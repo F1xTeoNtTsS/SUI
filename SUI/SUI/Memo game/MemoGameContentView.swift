@@ -7,25 +7,7 @@
 
 import SwiftUI
 
-class EmojiStock {
-    public let vehiclesEmoji = ["🚗", "🚕", "🚌", "🚎", "🚑", "🚜", "🚛", "🚚"]
-    public let animalsEmoji = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"]
-    public let flagsEmoji = ["🏴", "🏳️", "🏁", "🚩", "🏳️‍🌈", "🏴‍☠️", "🇰🇷", "🇮🇩"]
-}
-
 struct MemoGameContentView: View {
-    private enum Theme: CaseIterable {
-        case flags, vehicles, animals
-    }
-    
-//    @State var emojis: [String]
-//    @State var emojiCount = 7
-    
-//    init() {
-//        self.emojiStock = EmojiStock()
-//        self.emojis = emojiStock.defaulEmoji.shuffled()
-//    }
-    
     @ObservedObject var viewModel: MemoGameViewModel
     
     var body: some View {
@@ -33,12 +15,13 @@ struct MemoGameContentView: View {
             HStack {
                 Text("Memo game").font(.system(.title)).foregroundColor(.cyan)
                     .onTapGesture {
-//                        self.viewModel.cards = viewModel.cards.shuffled()
+                        self.viewModel.shuffleCards()
+                        self.viewModel.changeTheme()
                     }
                 Spacer()
                 
-                ForEach(Theme.allCases, id: \.self) { theme in
-//                    self.makeChoseThemeButton(theme: theme)
+                ForEach(MemoGameViewModel.Theme.allCases, id: \.self) { theme in
+                    self.makeChoseThemeButton(theme: theme)
                 }.foregroundColor(.cyan).frame(width: 55)
             }
             
@@ -60,34 +43,34 @@ struct MemoGameContentView: View {
         .font(.largeTitle)
     }
     
-//    private func makeChoseThemeButton(theme: Theme) -> some View {
-//        var emojis: [String] = []
-//        var imageName: String = ""
-//        var title: String = ""
-//
-//        switch theme {
-//        case .flags:
-//            emojis = emojiStock.flagsEmoji
-//            imageName = "flag.circle"
-//            title = "Flags"
-//        case .vehicles:
-//            emojis = emojiStock.vehiclesEmoji
-//            imageName = "car.circle"
-//            title = "Vehicles"
-//        case .animals:
-//            emojis = emojiStock.animalsEmoji
-//            imageName = "pawprint.circle"
-//            title = "Animals"
-//        }
-//        return VStack {
-//            Button {
-//                self.emojis = emojis.shuffled()
-//            } label: {
-//                Image(systemName: imageName)
-//            }
-//            Text(title).font(.system(size: 14, weight: .medium, design: .rounded))
-//        }
-//    }
+    private func makeChoseThemeButton(theme: MemoGameViewModel.Theme) -> some View {
+        var imageName: String = ""
+        var title: String = ""
+        var chosenTheme: MemoGameViewModel.Theme
+        
+        switch theme {
+        case .flags:
+            chosenTheme = .flags
+            imageName = "flag.circle"
+            title = "Flags"
+        case .vehicles:
+            chosenTheme = .vehicles
+            imageName = "car.circle"
+            title = "Vehicles"
+        case .animals:
+            chosenTheme = .animals
+            imageName = "pawprint.circle"
+            title = "Animals"
+        }
+        return VStack {
+            Button {
+                self.viewModel.changeTheme(chosenTheme)
+            } label: {
+                Image(systemName: imageName)
+            }
+            Text(title).font(.system(size: 14, weight: .medium, design: .rounded))
+        }
+    }
 }
 
 struct CardView: View {
@@ -96,12 +79,13 @@ struct CardView: View {
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20)
-            shape.fill().foregroundColor(.white)
-            
-            Text(self.card.content).font(.largeTitle)
             
             if self.card.isFaceUp {
+                shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: 4).foregroundColor(.cyan)
+                Text(self.card.content).font(.largeTitle)
+            } else if card.isMatched {
+                shape.opacity(0)
             } else {
                 shape.foregroundColor(.cyan)
             }
