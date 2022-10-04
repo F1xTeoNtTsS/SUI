@@ -8,36 +8,56 @@
 import SwiftUI
 
 class MemoGameViewModel: ObservableObject {
-    public enum Theme: CaseIterable {
-        case flags, vehicles, animals
-    }
-    
     @Published private var model: MemoGameModel<String> = createMemoGame(numberOfCardsPairs: 8)
     
     var cards: Array<MemoGameModel<String>.Card> {
         model.cards
     }
     
+    var currentThemeImageName: String {
+        self.getThemeImageName(theme: model.currentTheme)
+    }
+    
     static func createMemoGame(theme: Theme? = nil, numberOfCardsPairs: Int) -> MemoGameModel<String> {
-        let emojiStock = EmojiStock()
         var emoji: [String] = []
+        var currentTheme: Theme
+        
         switch theme {
-        case .flags:
-            emoji = emojiStock.flags
-        case .vehicles:
-            emoji = emojiStock.vehicles
-        case .animals:
-            emoji = emojiStock.animals
         case .none:
-            emoji = emojiStock.faces
+            currentTheme = Theme.allCases.randomElement() ?? .faces
+        default:
+            currentTheme = theme ?? .faces
         }
         
-        return MemoGameModel<String>(numberOfCardsPairs: numberOfCardsPairs) { pairIndex in
-            emoji[pairIndex]
+        emoji = EmojiStock.getEmoji(theme: currentTheme).shuffled()
+        
+        return MemoGameModel<String>(numberOfCardsPairs: numberOfCardsPairs,
+                                     currentTheme: currentTheme) { pairIndex in
+            while pairIndex < emoji.count {
+                return emoji[pairIndex]
+            }
+            return nil
         }
     }
     
-    func changeTheme(_ theme: Theme? = nil) {
+    func getThemeImageName(theme: Theme) -> String {
+        switch theme {
+        case .faces:
+            return "face.smiling"
+        case .flags:
+            return "flag.circle"
+        case .vehicles:
+            return "car.circle"
+        case .animals:
+            return "pawprint.circle"
+        case .food:
+            return "fork.knife.circle"
+        case .objects:
+            return "books.vertical.circle"
+        }
+    }
+    
+    func changeTheme(_ theme: Theme) {
         self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: 8)
     }
     

@@ -13,16 +13,20 @@ struct MemoGameContentView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Memo game").font(.system(.title)).foregroundColor(.cyan)
-                    .onTapGesture {
-                        self.viewModel.shuffleCards()
-                        self.viewModel.changeTheme()
-                    }
+                VStack {
+                    Text("Memo game")
+                        .font(.system(.headline))
+                        .foregroundColor(.cyan)
+                }
                 Spacer()
                 
-                ForEach(MemoGameViewModel.Theme.allCases, id: \.self) { theme in
-                    self.makeChoseThemeButton(theme: theme)
-                }.foregroundColor(.cyan).frame(width: 55)
+                Menu {
+                    ForEach(Theme.allCases, id: \.self) { theme in
+                        self.makeChoseThemeButton(theme: theme)
+                    }
+                } label: {
+                    Image(systemName: viewModel.currentThemeImageName)
+                }
             }
             
             ScrollView {
@@ -43,32 +47,16 @@ struct MemoGameContentView: View {
         .font(.largeTitle)
     }
     
-    private func makeChoseThemeButton(theme: MemoGameViewModel.Theme) -> some View {
-        var imageName: String = ""
-        var title: String = ""
-        var chosenTheme: MemoGameViewModel.Theme
-        
-        switch theme {
-        case .flags:
-            chosenTheme = .flags
-            imageName = "flag.circle"
-            title = "Flags"
-        case .vehicles:
-            chosenTheme = .vehicles
-            imageName = "car.circle"
-            title = "Vehicles"
-        case .animals:
-            chosenTheme = .animals
-            imageName = "pawprint.circle"
-            title = "Animals"
-        }
-        return VStack {
+    private func makeChoseThemeButton(theme: Theme) -> some View {        
+        return VStack(alignment: .center, spacing: 8) {
             Button {
-                self.viewModel.changeTheme(chosenTheme)
+                self.viewModel.changeTheme(theme)
             } label: {
-                Image(systemName: imageName)
+                Image(systemName: viewModel.getThemeImageName(theme: theme))
+                    .resizable()
+                Text(theme.rawValue.capitalized).font(.system(size: 14, weight: .medium, design: .rounded))
             }
-            Text(title).font(.system(size: 14, weight: .medium, design: .rounded))
+            
         }
     }
 }

@@ -5,17 +5,26 @@
 //  Created by F1xTeoNtTsS on 20.09.2022.
 //
 
+public enum Theme: String, CaseIterable {
+    case faces, flags, vehicles, animals, food, objects
+}
+
 struct MemoGameModel<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card>
+    private(set) var currentTheme: Theme
     private var chosenOneCardIndex: Int?
     
-    init(numberOfCardsPairs: Int, createCardContent: (Int) -> CardContent) {
+    
+    init(numberOfCardsPairs: Int, currentTheme: Theme, createCardContent: (Int) -> CardContent?) {
         self.cards = Array<Card>()
+        self.currentTheme = currentTheme
         
         for index in 0..<numberOfCardsPairs {
-            let content = createCardContent(index)
-            cards.append(Card(content: content, id: index * 2))
-            cards.append(Card(content: content, id: index * 2 + 1))
+            if let content = createCardContent(index) {
+                cards.append(Card(content: content, id: index * 2))
+                cards.append(Card(content: content, id: index * 2 + 1))
+            }
+            
         }
         self.cards = self.cards.shuffled()
     }
