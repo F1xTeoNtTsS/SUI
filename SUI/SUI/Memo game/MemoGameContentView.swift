@@ -16,18 +16,20 @@ struct MemoGameContentView: View {
                 VStack {
                     Text("Memo game")
                         .font(.system(.headline))
-                        .foregroundColor(.cyan)
                 }
-                Spacer()
                 
+                Spacer()
+                Text(viewModel.currentTheme.rawValue.capitalized)
+                    .font(.headline).fixedSize()
                 Menu {
                     ForEach(Theme.allCases, id: \.self) { theme in
                         self.makeChoseThemeButton(theme: theme)
                     }
                 } label: {
-                    Image(systemName: viewModel.currentThemeImageName)
-                }
-            }
+                    
+                    Image(systemName: viewModel.currentThemeImageName).padding()
+                }.tint(.cyan)
+            }.foregroundColor(.cyan)
             
             ScrollView {
                 let gi = GridItem(.adaptive(minimum: 70, maximum: 300))
@@ -41,29 +43,37 @@ struct MemoGameContentView: View {
                     }
                 }
             }
-            Spacer(minLength: 40)
+            Spacer(minLength: 10)
+            
+            HStack {
+                Button {
+                    self.viewModel.createNewGame()
+                } label: {
+                    Text("New game").font(.headline)
+                }
+                .buttonStyle(.bordered)
+                .tint(.cyan)
+                Text("Score: \(self.viewModel.score)").font(.headline).padding().foregroundColor(.cyan)
+            }
+            
         }
         .padding()
         .font(.largeTitle)
     }
     
-    private func makeChoseThemeButton(theme: Theme) -> some View {        
-        return VStack(alignment: .center, spacing: 8) {
-            Button {
-                self.viewModel.changeTheme(theme)
-            } label: {
-                Image(systemName: viewModel.getThemeImageName(theme: theme))
-                    .resizable()
-                Text(theme.rawValue.capitalized).font(.system(size: 14, weight: .medium, design: .rounded))
-            }
-            
+    private func makeChoseThemeButton(theme: Theme) -> some View {
+        return Button {
+            self.viewModel.changeTheme(theme)
+        } label: {
+            Image(systemName: viewModel.getThemeImageName(theme: theme))
+                .resizable()
+            Text(theme.rawValue.capitalized).font(.system(size: 14, weight: .medium, design: .rounded))
         }
     }
 }
 
 struct CardView: View {
     let card: MemoGameModel<String>.Card
-    
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20)

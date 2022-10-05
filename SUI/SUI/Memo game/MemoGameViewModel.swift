@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class MemoGameViewModel: ObservableObject {
+final class MemoGameViewModel: ObservableObject {
     @Published private var model: MemoGameModel<String> = createMemoGame(numberOfCardsPairs: 8)
     
     var cards: Array<MemoGameModel<String>.Card> {
@@ -16,6 +16,14 @@ class MemoGameViewModel: ObservableObject {
     
     var currentThemeImageName: String {
         self.getThemeImageName(theme: model.currentTheme)
+    }
+    
+    var currentTheme: Theme {
+        self.model.currentTheme
+    }
+    
+    var score: Int {
+        self.model.score
     }
     
     static func createMemoGame(theme: Theme? = nil, numberOfCardsPairs: Int) -> MemoGameModel<String> {
@@ -52,8 +60,14 @@ class MemoGameViewModel: ObservableObject {
             return "pawprint.circle"
         case .food:
             return "fork.knife.circle"
-        case .objects:
-            return "books.vertical.circle"
+        case .devices:
+            return "tv.circle"
+        }
+    }
+    
+    func createNewGame() {
+        if let theme = Theme.allCases.randomElement() {
+            self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: 8)
         }
     }
     

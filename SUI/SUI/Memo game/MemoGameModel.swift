@@ -6,12 +6,13 @@
 //
 
 public enum Theme: String, CaseIterable {
-    case faces, flags, vehicles, animals, food, objects
+    case faces, flags, vehicles, animals, food, devices
 }
 
-struct MemoGameModel<CardContent> where CardContent: Equatable {
+struct MemoGameModel<CardContent: Equatable> {
     private(set) var cards: Array<Card>
     private(set) var currentTheme: Theme
+    private(set) var score: Int
     private var chosenOneCardIndex: Int?
     
     
@@ -27,6 +28,7 @@ struct MemoGameModel<CardContent> where CardContent: Equatable {
             
         }
         self.cards = self.cards.shuffled()
+        self.score = 0
     }
     
     mutating func choose(_ card: Card) {
@@ -38,6 +40,10 @@ struct MemoGameModel<CardContent> where CardContent: Equatable {
                 if self.cards[chosenIndex].content == self.cards[potentialMatchIndex].content {
                     self.cards[chosenIndex].isMatched = true
                     self.cards[potentialMatchIndex].isMatched = true
+                    
+                    self.score += 2
+                } else {
+                    self.score -= 1
                 }
                 self.chosenOneCardIndex = nil
             } else {
@@ -45,13 +51,11 @@ struct MemoGameModel<CardContent> where CardContent: Equatable {
                     self.cards[index].isFaceUp = false
                 }
                 self.chosenOneCardIndex = chosenIndex
+                
+                
             }
             self.cards[chosenIndex].isFaceUp.toggle()
         }
-    }
-    
-    mutating func changeTheme() {
-        
     }
     
     mutating func shuffleCards() {
