@@ -13,11 +13,14 @@ struct MemoGameModel<CardContent: Equatable> {
     private(set) var cards: Array<Card>
     private(set) var currentTheme: Theme
     private(set) var score: Int
-    private var chosenOneCardIndex: Int?
     
+    private var chosenOneCardIndex: Int? {
+        get { cards.indices.filter { cards[$0].isFaceUp }.oneAndOnly }
+        set { self.cards.indices.forEach { self.cards[$0].isFaceUp = ($0 == newValue) }}
+    }
     
     init(numberOfCardsPairs: Int, currentTheme: Theme, createCardContent: (Int) -> CardContent?) {
-        self.cards = Array<Card>()
+        self.cards = []
         self.currentTheme = currentTheme
         
         for index in 0..<numberOfCardsPairs {
@@ -45,16 +48,13 @@ struct MemoGameModel<CardContent: Equatable> {
                 } else {
                     self.score -= 1
                 }
-                self.chosenOneCardIndex = nil
+                self.cards[chosenIndex].isFaceUp = true
             } else {
-                for index in self.cards.indices {
-                    self.cards[index].isFaceUp = false
-                }
+                
                 self.chosenOneCardIndex = chosenIndex
                 
                 
             }
-            self.cards[chosenIndex].isFaceUp.toggle()
         }
     }
     
@@ -71,10 +71,15 @@ struct MemoGameModel<CardContent: Equatable> {
     }
     
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
-        var isMatched: Bool = false
-        
-        var content: CardContent
-        var id: Int
+        let content: CardContent
+        let id: Int
+        var isFaceUp = false
+        var isMatched = false
+    }
+}
+
+extension Array {
+    var oneAndOnly: Element? {
+        return self.count == 1 ? self.first : nil
     }
 }

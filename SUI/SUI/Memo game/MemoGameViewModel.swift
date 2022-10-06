@@ -8,9 +8,10 @@
 import SwiftUI
 
 final class MemoGameViewModel: ObservableObject {
-    @Published private var model: MemoGameModel<String> = createMemoGame(numberOfCardsPairs: 8)
+    typealias Card = MemoGameModel<String>.Card
+    @Published private var model = createMemoGame(numberOfCardsPairs: 8)
     
-    var cards: Array<MemoGameModel<String>.Card> {
+    var cards: Array<Card> {
         model.cards
     }
     
@@ -26,7 +27,7 @@ final class MemoGameViewModel: ObservableObject {
         self.model.score
     }
     
-    static func createMemoGame(theme: Theme? = nil, numberOfCardsPairs: Int) -> MemoGameModel<String> {
+    private static func createMemoGame(theme: Theme? = nil, numberOfCardsPairs: Int) -> MemoGameModel<String> {
         var emoji: [String] = []
         var currentTheme: Theme
         
@@ -79,7 +80,7 @@ final class MemoGameViewModel: ObservableObject {
         self.model.shuffleCards()
     }
     
-    func onTapCard(card: MemoGameModel<String>.Card) {
+    func onTapCard(card: Card) {
         self.model.choose(card)
     }
 }

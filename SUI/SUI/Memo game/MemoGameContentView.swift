@@ -14,11 +14,12 @@ struct MemoGameContentView: View {
         VStack {
             HStack {
                 VStack {
-                    Text("Memo game")
-                        .font(.system(.headline))
+                    Text("Memoji")
+                        .font(.system(.title)).padding()
                 }
                 
                 Spacer()
+                
                 Text(viewModel.currentTheme.rawValue.capitalized)
                     .font(.headline).fixedSize()
                 Menu {
@@ -26,10 +27,9 @@ struct MemoGameContentView: View {
                         self.makeChoseThemeButton(theme: theme)
                     }
                 } label: {
-                    
                     Image(systemName: viewModel.currentThemeImageName).padding()
                 }.tint(.cyan)
-            }.foregroundColor(.cyan)
+            }
             
             ScrollView {
                 let gi = GridItem(.adaptive(minimum: 70, maximum: 300))
@@ -44,7 +44,6 @@ struct MemoGameContentView: View {
                 }
             }
             Spacer(minLength: 10)
-            
             HStack {
                 Button {
                     self.viewModel.createNewGame()
@@ -53,10 +52,10 @@ struct MemoGameContentView: View {
                 }
                 .buttonStyle(.bordered)
                 .tint(.cyan)
-                Text("Score: \(self.viewModel.score)").font(.headline).padding().foregroundColor(.cyan)
+                Text("Score: \(self.viewModel.score)").font(.headline).padding().monospacedDigit()
             }
-            
         }
+        .foregroundColor(.cyan)
         .padding()
         .font(.largeTitle)
     }
@@ -73,7 +72,8 @@ struct MemoGameContentView: View {
 }
 
 struct CardView: View {
-    let card: MemoGameModel<String>.Card
+    let card: MemoGameViewModel.Card
+
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20)
@@ -81,7 +81,7 @@ struct CardView: View {
             if self.card.isFaceUp {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: 4).foregroundColor(.cyan)
-                Text(self.card.content).font(.largeTitle)
+                Text(self.card.content)
             } else if card.isMatched {
                 shape.opacity(0)
             } else {
