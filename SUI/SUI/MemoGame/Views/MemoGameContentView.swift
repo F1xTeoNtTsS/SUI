@@ -32,10 +32,10 @@ struct MemoGameContentView: View {
             }
             
             ScrollView {
-                let gi = GridItem(.adaptive(minimum: 70, maximum: 300))
+                let gi = GridItem(.adaptive(minimum: Constants.minAdaptiveSize))
                 LazyVGrid(columns: [gi]) {
                     ForEach(self.viewModel.cards) { card in
-                        CardView(card: card)
+                        MemoGameCardView(card: card)
                             .aspectRatio(2/3, contentMode: .fit)
                             .onTapGesture {
                                 self.viewModel.onTapCard(card: card)
@@ -43,7 +43,7 @@ struct MemoGameContentView: View {
                     }
                 }
             }
-            Spacer(minLength: 10)
+            Spacer(minLength: Constants.spacerMinLength)
             HStack {
                 Button {
                     self.viewModel.createNewGame()
@@ -66,29 +66,14 @@ struct MemoGameContentView: View {
         } label: {
             Image(systemName: viewModel.getThemeImageName(theme: theme))
                 .resizable()
-            Text(theme.rawValue.capitalized).font(.system(size: 14, weight: .medium, design: .rounded))
+            Text(theme.rawValue.capitalized)
         }
     }
-}
-
-struct CardView: View {
-    let card: MemoGameViewModel.Card
-
-    var body: some View {
-        ZStack {
-            let shape = RoundedRectangle(cornerRadius: 20)
-            
-            if self.card.isFaceUp {
-                shape.fill().foregroundColor(.white)
-                shape.strokeBorder(lineWidth: 4).foregroundColor(.cyan)
-                Text(self.card.content)
-            } else if card.isMatched {
-                shape.opacity(0)
-            } else {
-                shape.foregroundColor(.cyan)
-            }
-            
-        }
+    
+    private enum Constants {
+        static let minAdaptiveSize: CGFloat = 70
+        static let spacerMinLength: CGFloat = 10
+        
     }
 }
 
