@@ -68,12 +68,12 @@ final class MemoGameViewModel: ObservableObject {
     
     func createNewGame() {
         if let theme = Theme.allCases.randomElement() {
-            self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: 8)
+            self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: self.model.numberOfCardsPairs)
         }
     }
     
     func changeTheme(_ theme: Theme) {
-        self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: 8)
+        self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: self.model.numberOfCardsPairs)
     }
     
     func shuffleCards() {

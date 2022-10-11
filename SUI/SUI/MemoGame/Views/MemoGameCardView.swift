@@ -35,7 +35,7 @@ struct MemoGameCardView: View {
     }
     
     private enum Constants {
-        static let shapeCornerRadius: CGFloat = 20
+        static let shapeCornerRadius: CGFloat = 10
         static let borderLineWidth: CGFloat = 4
         static let shapeOpacity: Double = 0
         static let fontRatioMultiplier: Double = 0.8

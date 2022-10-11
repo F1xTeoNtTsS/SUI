@@ -11,6 +11,7 @@ public enum Theme: String, CaseIterable {
 
 struct MemoGameModel<CardContent: Equatable> {
     private(set) var cards: Array<Card>
+    private(set) var numberOfCardsPairs: Int
     private(set) var currentTheme: Theme
     private(set) var score: Int
     
@@ -20,10 +21,11 @@ struct MemoGameModel<CardContent: Equatable> {
     }
     
     init(numberOfCardsPairs: Int, currentTheme: Theme, createCardContent: (Int) -> CardContent?) {
+        self.numberOfCardsPairs = numberOfCardsPairs
         self.cards = []
         self.currentTheme = currentTheme
         
-        for index in 0..<numberOfCardsPairs {
+        for index in 0..<self.numberOfCardsPairs {
             if let content = createCardContent(index) {
                 cards.append(Card(content: content, id: index * 2))
                 cards.append(Card(content: content, id: index * 2 + 1))
@@ -78,7 +80,7 @@ struct MemoGameModel<CardContent: Equatable> {
     }
 }
 
-extension Array {
+extension Array where Element: Hashable {
     var oneAndOnly: Element? {
         return self.count == 1 ? self.first : nil
     }

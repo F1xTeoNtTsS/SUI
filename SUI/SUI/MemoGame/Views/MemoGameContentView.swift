@@ -31,17 +31,8 @@ struct MemoGameContentView: View {
                 }.tint(.cyan)
             }
             
-            ScrollView {
-                let gi = GridItem(.adaptive(minimum: Constants.minAdaptiveSize))
-                LazyVGrid(columns: [gi]) {
-                    ForEach(self.viewModel.cards) { card in
-                        MemoGameCardView(card: card)
-                            .aspectRatio(2/3, contentMode: .fit)
-                            .onTapGesture {
-                                self.viewModel.onTapCard(card: card)
-                            }
-                    }
-                }
+            AspectVGrid(items: self.viewModel.cards, aspectRatio: 2/3) { card in
+                self.makeCardView(for: card)
             }
             Spacer(minLength: Constants.spacerMinLength)
             HStack {
@@ -67,6 +58,19 @@ struct MemoGameContentView: View {
             Image(systemName: viewModel.getThemeImageName(theme: theme))
                 .resizable()
             Text(theme.rawValue.capitalized)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeCardView(for card: MemoGameViewModel.Card) -> some View {
+        if card.isMatched && !card.isFaceUp {
+            Rectangle().opacity(0)
+        } else {
+            MemoGameCardView(card: card)
+                .padding(4)
+                .onTapGesture {
+                    self.viewModel.onTapCard(card: card)
+                }
         }
     }
     
