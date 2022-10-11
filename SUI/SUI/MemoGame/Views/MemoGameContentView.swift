@@ -9,6 +9,15 @@ import SwiftUI
 
 struct MemoGameContentView: View {
     @ObservedObject var viewModel: MemoGameViewModel
+    @State private var showingPopover = false
+    @State private var selectedTheme: Theme
+    @State private var numberOfCardsPairs: Int
+    
+    init(viewModel: MemoGameViewModel) {
+        self.viewModel = viewModel
+        self.selectedTheme = viewModel.currentTheme
+        self.numberOfCardsPairs = viewModel.numberOfCardsPairs
+    }
     
     var body: some View {
         VStack {
@@ -20,15 +29,21 @@ struct MemoGameContentView: View {
                 
                 Spacer()
                 
-                Text(viewModel.currentTheme.rawValue.capitalized)
-                    .font(.headline).fixedSize()
-                Menu {
-                    ForEach(Theme.allCases, id: \.self) { theme in
-                        self.makeChoseThemeButton(theme: theme)
-                    }
-                } label: {
-                    Image(systemName: viewModel.currentThemeImageName).padding()
-                }.tint(.cyan)
+                HStack(spacing: 0) {
+                    Text(viewModel.currentTheme.rawValue.capitalized)
+                        .font(.headline).fixedSize()
+                    Image(systemName: viewModel.currentThemeImageName).padding().tint(.cyan)
+                }
+                
+                
+//                Menu {
+//                    ForEach(Theme.allCases, id: \.self) { theme in
+//                        self.makeChoseThemeButton(theme: theme)
+//                    }
+//                } label: {
+//                    Image(systemName: viewModel.currentThemeImageName).padding()
+//                }.tint(.cyan)
+                
             }
             
             AspectVGrid(items: self.viewModel.cards, aspectRatio: 2/3) { card in
@@ -37,9 +52,46 @@ struct MemoGameContentView: View {
             Spacer(minLength: Constants.spacerMinLength)
             HStack {
                 Button {
-                    self.viewModel.createNewGame()
+                    self.showingPopover = true
                 } label: {
                     Text("New game").font(.headline)
+                }
+                .popover(isPresented: $showingPopover) {
+                    VStack(spacing: 0) {
+                        Text("New game").font(.title)
+                        Divider()
+                        Picker("Theme", selection: $selectedTheme) {
+                            ForEach(Theme.allCases, id: \.self) { theme in
+                                HStack {
+                                    Text("\(theme.rawValue.capitalized) ").font(.title2).foregroundColor(.cyan)
+                                    Image(systemName: viewModel.getThemeImageName(theme: theme)).foregroundColor(.cyan)
+                                }
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        Text("Selected theme: \(self.selectedTheme.rawValue)").font(.title2)
+                    }
+                    Divider()
+                    VStack(spacing: 0) {
+                        
+                        Picker("Pairs", selection: $numberOfCardsPairs) {
+                            ForEach(2...10, id: \.self) {
+                                Text("\($0)").font(.title2).foregroundColor(.cyan)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        Text("Number of pairs: \(self.numberOfCardsPairs)").font(.title2)
+                    }
+                    Divider()
+                    
+                    Button {
+                        self.viewModel.createNewGame(theme: self.selectedTheme,
+                                                     numberOfCardsPairs: self.numberOfCardsPairs)
+                        self.showingPopover = false
+                    } label: {
+                        Text("Start").font(.headline)
+                    }.padding()
+                        .buttonStyle(.bordered)
                 }
                 .buttonStyle(.bordered)
                 .tint(.cyan)
@@ -84,7 +136,8 @@ struct MemoGameContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let memoGameViewModel = MemoGameViewModel()
-        MemoGameContentView(viewModel: memoGameViewModel)
+        memoGameViewModel.onTapCard(card: memoGameViewModel.cards.first!)
+        return MemoGameContentView(viewModel: memoGameViewModel)
             .preferredColorScheme(.light)
             .previewInterfaceOrientation(.portrait)
     }

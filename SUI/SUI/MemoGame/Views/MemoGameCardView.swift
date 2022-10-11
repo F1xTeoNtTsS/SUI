@@ -18,6 +18,8 @@ struct MemoGameCardView: View {
                 if self.card.isFaceUp {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: Constants.borderLineWidth).foregroundColor(.cyan)
+                    Pie(startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 110-90))
+                        .padding(5).opacity(0.5)
                     Text(self.card.content)
                         .font(makeFontForContent(size: geometry.size))
                 } else if card.isMatched {
@@ -38,6 +40,6 @@ struct MemoGameCardView: View {
         static let shapeCornerRadius: CGFloat = 10
         static let borderLineWidth: CGFloat = 4
         static let shapeOpacity: Double = 0
-        static let fontRatioMultiplier: Double = 0.8
+        static let fontRatioMultiplier: Double = 0.7
     }
 }
