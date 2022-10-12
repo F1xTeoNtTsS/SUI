@@ -9,9 +9,11 @@ import SwiftUI
 
 struct MemoGameContentView: View {
     @ObservedObject var viewModel: MemoGameViewModel
-    @State private var showingPopover = false
     @State private var selectedTheme: Theme
     @State private var numberOfCardsPairs: Int
+    
+    @State private var newGamePopoverIsShown = false
+    @State private var endGameAlertIsShown = false
     
     init(viewModel: MemoGameViewModel) {
         self.viewModel = viewModel
@@ -34,64 +36,22 @@ struct MemoGameContentView: View {
                         .font(.headline).fixedSize()
                     Image(systemName: viewModel.currentThemeImageName).padding().tint(.cyan)
                 }
-                
-                
-//                Menu {
-//                    ForEach(Theme.allCases, id: \.self) { theme in
-//                        self.makeChoseThemeButton(theme: theme)
-//                    }
-//                } label: {
-//                    Image(systemName: viewModel.currentThemeImageName).padding()
-//                }.tint(.cyan)
-                
             }
             
             AspectVGrid(items: self.viewModel.cards, aspectRatio: 2/3) { card in
                 self.makeCardView(for: card)
             }
+            
+            
             Spacer(minLength: Constants.spacerMinLength)
             HStack {
                 Button {
-                    self.showingPopover = true
+                    self.newGamePopoverIsShown = true
                 } label: {
                     Text("New game").font(.headline)
                 }
-                .popover(isPresented: $showingPopover) {
-                    VStack(spacing: 0) {
-                        Text("New game").font(.title)
-                        Divider()
-                        Picker("Theme", selection: $selectedTheme) {
-                            ForEach(Theme.allCases, id: \.self) { theme in
-                                HStack {
-                                    Text("\(theme.rawValue.capitalized) ").font(.title2).foregroundColor(.cyan)
-                                    Image(systemName: viewModel.getThemeImageName(theme: theme)).foregroundColor(.cyan)
-                                }
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        Text("Selected theme: \(self.selectedTheme.rawValue)").font(.title2)
-                    }
-                    Divider()
-                    VStack(spacing: 0) {
-                        
-                        Picker("Pairs", selection: $numberOfCardsPairs) {
-                            ForEach(2...10, id: \.self) {
-                                Text("\($0)").font(.title2).foregroundColor(.cyan)
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        Text("Number of pairs: \(self.numberOfCardsPairs)").font(.title2)
-                    }
-                    Divider()
-                    
-                    Button {
-                        self.viewModel.createNewGame(theme: self.selectedTheme,
-                                                     numberOfCardsPairs: self.numberOfCardsPairs)
-                        self.showingPopover = false
-                    } label: {
-                        Text("Start").font(.headline)
-                    }.padding()
-                        .buttonStyle(.bordered)
+                .popover(isPresented: $newGamePopoverIsShown) {
+                    makeNewGamePopover()
                 }
                 .buttonStyle(.bordered)
                 .tint(.cyan)
@@ -101,22 +61,20 @@ struct MemoGameContentView: View {
         .foregroundColor(.cyan)
         .padding()
         .font(.largeTitle)
-    }
-    
-    private func makeChoseThemeButton(theme: Theme) -> some View {
-        return Button {
-            self.viewModel.changeTheme(theme)
-        } label: {
-            Image(systemName: viewModel.getThemeImageName(theme: theme))
-                .resizable()
-            Text(theme.rawValue.capitalized)
+        
+        .onChange(of: self.viewModel.isGameEnded) { newValue in
+            self.endGameAlertIsShown = newValue
         }
+        .alert(isPresented: $endGameAlertIsShown, content: {
+            self.makeEndGameAlert()
+        })
     }
     
     @ViewBuilder
     private func makeCardView(for card: MemoGameViewModel.Card) -> some View {
         if card.isMatched && !card.isFaceUp {
-            Rectangle().opacity(0)
+            MemoGameCardView(card: card)
+                .padding(4)
         } else {
             MemoGameCardView(card: card)
                 .padding(4)
@@ -124,6 +82,58 @@ struct MemoGameContentView: View {
                     self.viewModel.onTapCard(card: card)
                 }
         }
+    }
+    
+    @ViewBuilder
+    private func makeNewGamePopover() -> some View {
+        VStack(spacing: 0) {
+            Text("New game").font(.title)
+            Divider()
+            Picker("Theme", selection: $selectedTheme) {
+                ForEach(Theme.allCases, id: \.self) { theme in
+                    HStack {
+                        Text("\(theme.rawValue.capitalized) ").font(.title2).foregroundColor(.cyan)
+                        Image(systemName: viewModel.getThemeImageName(theme: theme)).foregroundColor(.cyan)
+                    }
+                }
+            }
+            .pickerStyle(.wheel)
+            Text("Selected theme: \(self.selectedTheme.rawValue)").font(.title2)
+        }
+        Divider()
+        VStack(spacing: 0) {
+            
+            Picker("Pairs", selection: $numberOfCardsPairs) {
+                ForEach(2...15, id: \.self) {
+                    Text("\($0)").font(.title2).foregroundColor(.cyan)
+                }
+            }
+            .pickerStyle(.wheel)
+            Text("Number of pairs: \(self.numberOfCardsPairs)").font(.title2)
+        }
+        Divider()
+        
+        Button {
+            self.viewModel.createNewGame(theme: self.selectedTheme,
+                                         numberOfCardsPairs: self.numberOfCardsPairs)
+            self.newGamePopoverIsShown = false
+        } label: {
+            Text("Start").font(.headline)
+        }.padding()
+            .buttonStyle(.bordered)
+    }
+    
+    private func makeEndGameAlert() -> Alert {
+        Alert(title: Text(self.viewModel.score > 0 ? "You WIN!" : "Game Over!"),
+              message: Text("Score: \(self.viewModel.score)"),
+              primaryButton: .default(
+                Text("Try Again")) {
+                    self.viewModel.createNewGame(theme: self.selectedTheme,
+                                                 numberOfCardsPairs: self.numberOfCardsPairs)
+                },
+              secondaryButton: .default(Text("Customize")) {
+            self.newGamePopoverIsShown = true
+        })
     }
     
     private enum Constants {

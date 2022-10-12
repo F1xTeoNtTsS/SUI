@@ -23,7 +23,7 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
                 let minWidth: CGFloat = self.widthThatFits(itemCount: self.items.count,
                                                            in: geometry.size,
                                                            itemAspectRatio: self.aspectRatio)
-                LazyVGrid(columns: [self.adaptiveGridItem(minWidth: minWidth)], spacing: 0){
+                LazyVGrid(columns: [self.adaptiveGridItem(minWidth: minWidth)], spacing: 0) {
                     ForEach(self.items) { item in
                         content(item).aspectRatio(self.aspectRatio, contentMode: .fit)
                     }

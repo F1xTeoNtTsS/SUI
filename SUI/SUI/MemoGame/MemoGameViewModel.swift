@@ -16,7 +16,7 @@ final class MemoGameViewModel: ObservableObject {
     }
     
     var numberOfCardsPairs: Int {
-        model.numberOfCardsPairs
+        model.numberOfCardsOfSet
     }
     
     var currentThemeImageName: String {
@@ -29,6 +29,10 @@ final class MemoGameViewModel: ObservableObject {
     
     var score: Int {
         self.model.score
+    }
+    
+    var isGameEnded: Bool {
+        self.model.isGameEnded
     }
     
     private static func createMemoGame(theme: Theme? = nil, numberOfCardsPairs: Int) -> MemoGameModel<String> {
@@ -75,7 +79,7 @@ final class MemoGameViewModel: ObservableObject {
     }
     
     func changeTheme(_ theme: Theme) {
-        self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: self.model.numberOfCardsPairs)
+        self.model = MemoGameViewModel.createMemoGame(theme: theme, numberOfCardsPairs: self.model.numberOfCardsOfSet)
     }
     
     func shuffleCards() {
