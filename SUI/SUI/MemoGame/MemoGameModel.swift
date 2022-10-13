@@ -50,7 +50,6 @@ struct MemoGameModel<CardContent: Equatable> {
         if let chosenIndex = self.cards.firstIndex(where: { $0.id == card.id }),
            !self.cards[chosenIndex].isFaceUp,
            !self.cards[chosenIndex].isMatched {
-
             if let potentialMatchIndex = self.chosenOneCardIndex {
                 if self.cards[chosenIndex].content == self.cards[potentialMatchIndex].content {
                     self.cards[chosenIndex].isMatched = true

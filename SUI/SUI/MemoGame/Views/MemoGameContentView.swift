@@ -86,33 +86,34 @@ struct MemoGameContentView: View {
     
     @ViewBuilder
     private func makeNewGamePopover() -> some View {
-        VStack(spacing: 0) {
-            Text("New game").font(.title)
-            Divider()
-            Picker("Theme", selection: $selectedTheme) {
-                ForEach(Theme.allCases, id: \.self) { theme in
-                    HStack {
-                        Text("\(theme.rawValue.capitalized) ").font(.title2).foregroundColor(.cyan)
-                        Image(systemName: viewModel.getThemeImageName(theme: theme)).foregroundColor(.cyan)
+        Text("New game").font(.title).padding()
+        ScrollView {
+            VStack(spacing: 0) {
+                Divider()
+                Picker("Theme", selection: $selectedTheme) {
+                    ForEach(Theme.allCases, id: \.self) { theme in
+                        HStack {
+                            Text("\(theme.rawValue.capitalized) ").font(.title2).foregroundColor(.cyan)
+                            Image(systemName: viewModel.getThemeImageName(theme: theme)).foregroundColor(.cyan)
+                        }
                     }
                 }
+                .pickerStyle(.wheel)
+                Text("Selected theme: \(self.selectedTheme.rawValue)").font(.title2)
             }
-            .pickerStyle(.wheel)
-            Text("Selected theme: \(self.selectedTheme.rawValue)").font(.title2)
-        }
-        Divider()
-        VStack(spacing: 0) {
-            
-            Picker("Pairs", selection: $numberOfCardsPairs) {
-                ForEach(2...15, id: \.self) {
-                    Text("\($0)").font(.title2).foregroundColor(.cyan)
+            Divider()
+            VStack(spacing: 0) {
+                
+                Picker("Pairs", selection: $numberOfCardsPairs) {
+                    ForEach(2...15, id: \.self) {
+                        Text("\($0)").font(.title2).foregroundColor(.cyan)
+                    }
                 }
+                .pickerStyle(.wheel)
+                Text("Number of pairs: \(self.numberOfCardsPairs)").font(.title2)
             }
-            .pickerStyle(.wheel)
-            Text("Number of pairs: \(self.numberOfCardsPairs)").font(.title2)
+            Divider()
         }
-        Divider()
-        
         Button {
             self.viewModel.createNewGame(theme: self.selectedTheme,
                                          numberOfCardsPairs: self.numberOfCardsPairs)

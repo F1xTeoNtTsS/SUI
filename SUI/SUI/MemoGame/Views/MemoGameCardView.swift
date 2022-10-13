@@ -24,23 +24,14 @@ struct MemoGameCardView: View {
     var body: some View {
         GeometryReader(content: { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: Constants.shapeCornerRadius)
-                
-                if self.card.isFaceUp {
-                    shape.fill().foregroundColor(.white)
-                    shape.strokeBorder(lineWidth: Constants.borderLineWidth)
-                        .foregroundColor(self.borderColor)
-                    Pie(startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 110-90))
-                        .padding(5).opacity(0.5)
-                    Text(self.card.content)
-                        .font(makeFontForContent(size: geometry.size))
-                } else if card.isMatched {
-                    shape.fill().foregroundColor(.green).opacity(0.2)
-                } else {
-                    shape.foregroundColor(.cyan)
-                }
-                
+                Pie(startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 110-90))
+                    .padding(5).opacity(0.5)
+                Text(self.card.content)
+                    .font(makeFontForContent(size: geometry.size))
             }
+            .cardify(isMatched: self.card.isMatched,
+                     isFaceUp: self.card.isFaceUp,
+                     borderColor: self.borderColor)
         })
     }
     
