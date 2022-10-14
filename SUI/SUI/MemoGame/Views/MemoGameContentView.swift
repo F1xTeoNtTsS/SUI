@@ -72,16 +72,13 @@ struct MemoGameContentView: View {
     
     @ViewBuilder
     private func makeCardView(for card: MemoGameViewModel.Card) -> some View {
-        if card.isMatched && !card.isFaceUp {
-            MemoGameCardView(card: card)
-                .padding(4)
-        } else {
-            MemoGameCardView(card: card)
-                .padding(4)
-                .onTapGesture {
+        MemoGameCardView(card: card)
+            .padding(4)
+            .onTapGesture {
+                if !card.isMatched && !card.isFaceUp {
                     self.viewModel.onTapCard(card: card)
                 }
-        }
+            }
     }
     
     @ViewBuilder
