@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct SUIApp: App {
-    
     private let memoGameViewModel = MemoGameViewModel()
     
     var body: some Scene {

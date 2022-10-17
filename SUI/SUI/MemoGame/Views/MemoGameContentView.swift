@@ -9,8 +9,12 @@ import SwiftUI
 
 struct MemoGameContentView: View {
     @ObservedObject var viewModel: MemoGameViewModel
+    
+    @Namespace private var dealingNamespace
+    
     @State private var selectedTheme: Theme
     @State private var numberOfCardsPairs: Int
+    @State private var dealt = Set<Int>()
     
     @State private var newGamePopoverIsShown = false
     @State private var endGameAlertIsShown = false
@@ -23,40 +27,10 @@ struct MemoGameContentView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                VStack {
-                    Text("Memoji")
-                        .font(.system(.title)).padding()
-                }
-                
-                Spacer()
-                
-                HStack(spacing: 0) {
-                    Text(viewModel.currentTheme.rawValue.capitalized)
-                        .font(.headline).fixedSize()
-                    Image(systemName: viewModel.currentThemeImageName).padding().tint(.cyan)
-                }
-            }
-            
-            AspectVGrid(items: self.viewModel.cards, aspectRatio: 2/3) { card in
-                self.makeCardView(for: card)
-            }
-            
-            
+            self.header
+            self.gameBody
             Spacer(minLength: Constants.spacerMinLength)
-            HStack {
-                Button {
-                    self.newGamePopoverIsShown = true
-                } label: {
-                    Text("New game").font(.headline)
-                }
-                .popover(isPresented: $newGamePopoverIsShown) {
-                    makeNewGamePopover()
-                }
-                .buttonStyle(.bordered)
-                .tint(.cyan)
-                Text("Score: \(self.viewModel.score)").font(.headline).padding().monospacedDigit()
-            }
+            self.footer
         }
         .foregroundColor(.cyan)
         .padding()
@@ -70,15 +44,75 @@ struct MemoGameContentView: View {
         })
     }
     
-    @ViewBuilder
-    private func makeCardView(for card: MemoGameViewModel.Card) -> some View {
-        MemoGameCardView(card: card)
-            .padding(4)
-            .onTapGesture {
-                if !card.isMatched && !card.isFaceUp {
-                    self.viewModel.onTapCard(card: card)
+    private var header: some View {
+        HStack {
+            VStack {
+                Text("Memoji")
+                    .font(.system(.title)).padding()
+            }
+            Spacer()
+            HStack(spacing: 0) {
+                Text(viewModel.currentTheme.rawValue.capitalized)
+                    .font(.headline).fixedSize()
+                ZStack {
+                    ForEach(self.viewModel.cards.filter(isUndealt)) { card in
+                        MemoGameCardView(card: card)
+                            .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                            .transition(AnyTransition.asymmetric(insertion: .opacity, removal: .identity))
+                            .zIndex(zIndex(of: card))
+                    }
+                    .frame(width: 0, height: 0)
+                    Image(systemName: viewModel.currentThemeImageName).padding().tint(.cyan)
                 }
             }
+        }
+    }
+    
+    private func zIndex(of card: MemoGameViewModel.Card) -> Double {
+        -Double(self.viewModel.cards.firstIndex(where: { $0.id == card.id }) ?? 0)
+    }
+    
+    private var gameBody: some View {
+        AspectVGrid(items: self.viewModel.cards, aspectRatio: 2/3) { card in
+            if self.isUndealt(card) || card.isMatched && !card.isFaceUp {
+                Color.clear
+            } else {
+                MemoGameCardView(card: card)
+                    .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                    .padding(4)
+                    .transition(AnyTransition.asymmetric(insertion: .identity, removal: .scale))
+                    .zIndex(self.zIndex(of: card))
+                    .onTapGesture {
+                        if !card.isMatched && !card.isFaceUp {
+                            withAnimation {
+                                self.viewModel.onTapCard(card: card)
+                            }
+                        }
+                    }
+            }
+            
+        }
+        .onAppear {
+            withAnimation {
+                self.viewModel.cards.forEach { self.deal($0) }
+            }
+        }
+    }
+    
+    private var footer: some View {
+        HStack {
+            Button {
+                self.newGamePopoverIsShown = true
+            } label: {
+                Text("New game").font(.headline)
+            }
+            .popover(isPresented: $newGamePopoverIsShown) {
+                makeNewGamePopover()
+            }
+            .buttonStyle(.bordered)
+            .tint(.cyan)
+            Text("Score: \(self.viewModel.score)").font(.headline).padding().monospacedDigit()
+        }
     }
     
     @ViewBuilder
@@ -112,9 +146,9 @@ struct MemoGameContentView: View {
             Divider()
         }
         Button {
-            self.viewModel.createNewGame(theme: self.selectedTheme,
-                                         numberOfCardsPairs: self.numberOfCardsPairs)
+            createNewGame()
             self.newGamePopoverIsShown = false
+            
         } label: {
             Text("Start").font(.headline)
         }.padding()
@@ -126,12 +160,40 @@ struct MemoGameContentView: View {
               message: Text("Score: \(self.viewModel.score)"),
               primaryButton: .default(
                 Text("Try Again")) {
-                    self.viewModel.createNewGame(theme: self.selectedTheme,
-                                                 numberOfCardsPairs: self.numberOfCardsPairs)
+                    createNewGame()
                 },
               secondaryButton: .default(Text("Customize")) {
             self.newGamePopoverIsShown = true
         })
+    }
+    
+    private func createNewGame() {
+        self.dealt.removeAll()
+        self.viewModel.createNewGame(theme: self.selectedTheme,
+                                     numberOfCardsPairs: self.numberOfCardsPairs)
+        
+        
+        for card in self.viewModel.cards {
+            withAnimation(self.dealAnimation(for: card)) {
+                deal(card)
+            }
+        }
+    }
+    
+    private func dealAnimation(for card: MemoGameViewModel.Card) -> Animation {
+        var delay = 0.0
+        if let index = self.viewModel.cards.firstIndex(where: { $0.id == card.id }) {
+            delay = Double(index) * (0.5 / Double(self.viewModel.cards.count))
+        }
+        return Animation.easeInOut(duration: 1).delay(delay)
+    }
+    
+    private func deal(_ card: MemoGameViewModel.Card) {
+        self.dealt.insert(card.id)
+    }
+    
+    private func isUndealt(_ card: MemoGameViewModel.Card) -> Bool {
+        !self.dealt.contains(card.id)
     }
     
     private enum Constants {
