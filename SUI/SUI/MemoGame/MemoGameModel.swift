@@ -40,7 +40,7 @@ struct MemoGameModel<CardContent: Equatable> {
                 }
             }
         }
-        self.cards = self.cards.shuffled()
+        self.cards.shuffle()
         self.score = 0
         self.matchedCardsCount = 0
     }

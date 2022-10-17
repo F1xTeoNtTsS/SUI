@@ -27,6 +27,9 @@ struct MemoGameCardView: View {
                 Pie(startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 110-90))
                     .padding(5).opacity(0.5)
                 Text(self.card.content)
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(Animation.linear(duration: 1)
+                        .repeatCount(1), value: card.isMatched)
                     .font(makeFontForContent(size: geometry.size))
             }
             .cardify(isMatched: self.card.isMatched,

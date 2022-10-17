@@ -22,12 +22,12 @@ struct Cardify: ViewModifier {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: Constants.borderLineWidth)
                     .foregroundColor(self.borderColor)
-                content
             } else if self.isMatched {
                 shape.fill().foregroundColor(.green).opacity(0.2)
             } else {
                 shape.foregroundColor(.cyan)
             }
+            content.opacity(self.isFaceUp ? 1 : 0)
         }
     }
     
