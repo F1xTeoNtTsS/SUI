@@ -28,6 +28,7 @@ struct MGModel<CardContent: Equatable> {
     
     init(numberOfCardsPairs: Int,
          currentTheme: Theme,
+         shuffled: Bool = true,
          createCardContent: (Int) -> CardContent?) {
         self.numberOfCardsOfSet = numberOfCardsPairs
         self.cards = []
@@ -42,7 +43,9 @@ struct MGModel<CardContent: Equatable> {
                 }
             }
         }
-        self.cards.shuffle()
+        if shuffled {
+            self.cards.shuffle() 
+        }
         self.score = 0
         self.matchedCardsCount = 0
     }
@@ -74,7 +77,7 @@ struct MGModel<CardContent: Equatable> {
     }
     
     mutating func shuffleCards() {
-        self.cards = self.cards.shuffled()
+        self.cards.shuffle()
         self.refreshCards()
     }
     

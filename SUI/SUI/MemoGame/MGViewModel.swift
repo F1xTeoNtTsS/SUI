@@ -56,6 +56,7 @@ final class MGViewModel: ObservableObject {
             return nil
         }
     }
+    
     func getThemeImageName(theme: Theme) -> String {
         switch theme {
         case .faces:
@@ -72,15 +73,19 @@ final class MGViewModel: ObservableObject {
             return "tv.circle"
         }
     }
+    
     func createNewGame(theme: Theme, numberOfCardsPairs: Int) {
         self.model = MGViewModel.createMemoGame(theme: theme, numberOfCardsPairs: numberOfCardsPairs)
     }
+    
     func changeTheme(_ theme: Theme) {
         self.model = MGViewModel.createMemoGame(theme: theme, numberOfCardsPairs: self.model.numberOfCardsOfSet)
     }
+    
     func shuffleCards() {
         self.model.shuffleCards()
     }
+    
     func onTapCard(card: Card) {
         self.model.choose(card)
     }
