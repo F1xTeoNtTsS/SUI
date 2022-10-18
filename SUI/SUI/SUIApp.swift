@@ -9,11 +9,10 @@ import SwiftUI
 
 @main
 struct SUIApp: App {
-    private let memoGameViewModel = MemoGameViewModel()
-    
+    private let memoGameViewModel = MGViewModel()
     var body: some Scene {
         WindowGroup {
-            MemoGameContentView(viewModel: self.memoGameViewModel)
+            MGContentView(viewModel: self.memoGameViewModel)
         }
     }
 }
