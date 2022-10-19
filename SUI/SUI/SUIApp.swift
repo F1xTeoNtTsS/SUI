@@ -12,7 +12,8 @@ struct SUIApp: App {
     private let memoGameViewModel = MGViewModel()
     var body: some Scene {
         WindowGroup {
-            MGContentView(viewModel: self.memoGameViewModel)
+//            MGContentView(viewModel: self.memoGameViewModel)
+            EADocumentView(viewModel: EADocumentViewModel(model: EAModel()))
         }
     }
 }
