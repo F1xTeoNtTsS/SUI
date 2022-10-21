@@ -8,7 +8,7 @@
 import Foundation
 
 extension DMModel {
-    enum Background {
+    enum Background: Equatable {
         case blank
         case url(URL)
         case imageData(Data)

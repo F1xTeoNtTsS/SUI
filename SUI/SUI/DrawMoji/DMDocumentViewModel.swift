@@ -11,12 +11,24 @@ final class DMDocumentViewModel: ObservableObject {
     typealias Emoji = DMModel.Emoji
     typealias Background = DMModel.Background
     
-    @Published private(set) var model: DMModel
+    @Published private(set) var model: DMModel {
+        didSet {
+            if model.background != oldValue.background {
+                fetchBackgroundImageDataIfNecessary()
+            }
+        }
+    }
+    
+    @Published var backgroundImage: UIImage?
+    @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
+    
+    enum BackgroundImageFetchStatus {
+        case idle
+        case fetching
+    }
     
     init(model: DMModel) {
         self.model = DMModel()
-        self.model.addEmoji(content: "👶🏻", at: (x: 100, y: 200), size: 40)
-        self.model.addEmoji(content: "👀", at: (x: -100, y: 200), size: 80)
     }
     
     var emojis: [DMModel.Emoji] { self.model.emojis }
@@ -43,6 +55,29 @@ final class DMDocumentViewModel: ObservableObject {
         if let index = self.model.emojis.index(matching: emoji) {
             self.model.emojis[index].size = Int((CGFloat(self.model.emojis[index].size) * scale)
                 .rounded(.toNearestOrAwayFromZero))
+        }
+    }
+    
+    private func fetchBackgroundImageDataIfNecessary() {
+        self.backgroundImage = nil
+        switch self.model.background {
+        case .blank:
+            break
+        case .url(let url):
+            self.backgroundImageFetchStatus = .fetching
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let data = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async { [weak self] in
+                        if self?.model.background == DMModel.Background.url(url) {
+                            self?.backgroundImageFetchStatus = .idle
+                            self?.backgroundImage = UIImage(data: data)
+                        }
+                    }
+                    
+                }
+            }
+        case .imageData(let data):
+            self.backgroundImage = UIImage(data: data)
         }
     }
 }

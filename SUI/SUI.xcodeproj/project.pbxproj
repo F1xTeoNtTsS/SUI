@@ -31,6 +31,7 @@
 		2D64A47328D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */; };
 		2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CC28EAD83700F5024C /* EmojiStock.swift */; };
 		2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CF28F05CFE00F5024C /* MGCardView.swift */; };
+		2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */; };
 		B0B79547FF613E194B1661AB /* Pods_SUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65FF96ABF3EFA2126FF86C0 /* Pods_SUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2D6984CC28EAD83700F5024C /* EmojiStock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiStock.swift; sourceTree = "<group>"; };
 		2D6984CF28F05CFE00F5024C /* MGCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGCardView.swift; sourceTree = "<group>"; };
+		2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		7AB7EACEC887AC0CEB7D5832 /* Pods-SUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUITests/Pods-SUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81491920A4045E3430728D43 /* Pods-SUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI.debug.xcconfig"; path = "Target Support Files/Pods-SUI/Pods-SUI.debug.xcconfig"; sourceTree = "<group>"; };
 		8349927BA54734D6A4606725 /* Pods-SUI-SUIUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI-SUIUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUI-SUIUITests/Pods-SUI-SUIUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				2D4D31AF29000346009E7140 /* DMModel.Background.swift */,
 				2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */,
 				2D4D31BB29002A6E009E7140 /* Views */,
+				2DB59EB82902BC6700A361EF /* ViewModifiers */,
 			);
 			path = DrawMoji;
 			sourceTree = "<group>";
@@ -243,6 +246,14 @@
 				2D41628928F56AD300FCD8B9 /* Pie.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2DB59EB82902BC6700A361EF /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		736B82327460442E317976E0 /* Frameworks */ = {
@@ -493,6 +504,7 @@
 				2D64A45828D3AAFD00F6AECD /* MGContentView.swift in Sources */,
 				2D4D31B929000BEB009E7140 /* UtilityViews.swift in Sources */,
 				2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */,
+				2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */,
 				2D41628A28F56AD300FCD8B9 /* Pie.swift in Sources */,
 				2D4D31B22900058E009E7140 /* DMDocumentViewModel.swift in Sources */,
 				2D41628F28F822D600FCD8B9 /* Cardify.swift in Sources */,
