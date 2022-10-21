@@ -13,7 +13,7 @@ struct SUIApp: App {
     var body: some Scene {
         WindowGroup {
 //            MGContentView(viewModel: self.memoGameViewModel)
-            EADocumentView(viewModel: EADocumentViewModel(model: EAModel()))
+            DMDocumentView(viewModel: DMDocumentViewModel(model: DMModel()))
         }
     }
 }

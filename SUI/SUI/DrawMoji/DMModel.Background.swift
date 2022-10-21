@@ -1,5 +1,5 @@
 //
-//  EAModel.Background.swift
+//  DMModel.Background.swift
 //  SUI
 //
 //  Created by F1xTeoNtTsS on 19.10.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension EAModel {
+extension DMModel {
     enum Background {
         case blank
         case url(URL)

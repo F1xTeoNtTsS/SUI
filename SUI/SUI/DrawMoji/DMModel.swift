@@ -1,5 +1,5 @@
 //
-//  EAModel.swift
+//  DMModel.swift
 //  SUI
 //
 //  Created by F1xTeoNtTsS on 19.10.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EAModel {
+struct DMModel {
     var background = Background.blank
     var emojis = [Emoji]()
     

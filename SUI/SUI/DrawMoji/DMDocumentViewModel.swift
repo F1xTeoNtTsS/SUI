@@ -1,5 +1,5 @@
 //
-//  EADocumentViewModel.swift
+//  DMDocumentViewModel.swift
 //  SUI
 //
 //  Created by F1xTeoNtTsS on 19.10.2022.
@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-class EADocumentViewModel: ObservableObject {
-    typealias Emoji = EAModel.Emoji
-    typealias Background = EAModel.Background
+final class DMDocumentViewModel: ObservableObject {
+    typealias Emoji = DMModel.Emoji
+    typealias Background = DMModel.Background
     
-    @Published private(set) var model: EAModel
+    @Published private(set) var model: DMModel
     
-    init(model: EAModel) {
-        self.model = EAModel()
+    init(model: DMModel) {
+        self.model = DMModel()
         self.model.addEmoji(content: "👶🏻", at: (x: 100, y: 200), size: 40)
         self.model.addEmoji(content: "👀", at: (x: -100, y: 200), size: 80)
     }
     
-    var emojis: [EAModel.Emoji] { self.model.emojis }
-    var background: EAModel.Background { self.model.background }
+    var emojis: [DMModel.Emoji] { self.model.emojis }
+    var background: DMModel.Background { self.model.background }
     
     // MARK: - Intents
     
