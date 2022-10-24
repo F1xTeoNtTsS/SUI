@@ -13,6 +13,7 @@ final class DMDocumentViewModel: ObservableObject {
     
     @Published private(set) var model: DMModel {
         didSet {
+            scheduledAutosave()
             if model.background != oldValue.background {
                 fetchBackgroundImageDataIfNecessary()
             }
@@ -22,17 +23,44 @@ final class DMDocumentViewModel: ObservableObject {
     @Published var backgroundImage: UIImage?
     @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
     
-    enum BackgroundImageFetchStatus {
-        case idle
-        case fetching
-    }
-    
-    init(model: DMModel) {
-        self.model = DMModel()
+    init() {
+        guard let url = Autosave.url, let autosavedDrawMoji = try? DMModel(url: url) else {
+            self.model = DMModel()
+            return
+        }
+        self.model = autosavedDrawMoji
+        self.fetchBackgroundImageDataIfNecessary()
     }
     
     var emojis: [DMModel.Emoji] { self.model.emojis }
     var background: DMModel.Background { self.model.background }
+    
+    private var autosaveTimer: Timer?
+    
+    private func scheduledAutosave() {
+        autosaveTimer?.invalidate()
+        autosaveTimer = Timer.scheduledTimer(withTimeInterval: Autosave.coalescingInterval, repeats: false) { _ in
+            self.autosave()
+        }
+    }
+    
+    private func autosave() {
+        guard let url = Autosave.url else { return }
+        save(to: url)
+    }
+    
+    private func save(to url: URL) {
+        do {
+            let data: Data = try self.model.encodeJson()
+            print("json = \(String(data: data, encoding: .utf8) ?? "nil")")
+            try data.write(to: url)
+            print("\(#function) success")
+        } catch let encodingError where encodingError is EncodingError {
+            print(encodingError.localizedDescription)
+        } catch {
+            print("\(error)")
+        }
+    }
     
     // MARK: - Intents
     
@@ -79,5 +107,21 @@ final class DMDocumentViewModel: ObservableObject {
         case .imageData(let data):
             self.backgroundImage = UIImage(data: data)
         }
+    }
+}
+
+extension DMDocumentViewModel {
+    enum BackgroundImageFetchStatus {
+        case idle
+        case fetching
+    }
+    
+    private struct Autosave {
+        static let filename = "Autosave.DrawMoji"
+        static var url: URL? {
+            let documentDerectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return documentDerectory?.appendingPathComponent(filename, conformingTo: .data)
+        }
+        static var coalescingInterval = 5.0
     }
 }

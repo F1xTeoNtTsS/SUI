@@ -26,7 +26,7 @@ struct DMDocumentView: View {
                         .scaleEffect(zoomScale)
                         .position(convertFromEmojiCoordinate((0, 0), in: geometry))
                 )
-                .padding()
+                
                 .gesture(doubleTapToZoom(in: geometry.size))
                 if self.viewModel.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(2.0)
@@ -36,6 +36,7 @@ struct DMDocumentView: View {
                         .font(.system(size: self.fontSize(for: emoji)))
                         .scaleEffect(zoomScale)
                         .position(self.position(for: emoji, in: geometry))
+                        .memofy(isSelected: emoji.isSelected)
                 }
             }
             .clipped()
