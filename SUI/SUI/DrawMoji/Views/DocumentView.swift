@@ -1,5 +1,5 @@
 //
-//  DMDocumentView.swift
+//  DocumentView.swift
 //  SUI
 //
 //  Created by F1xTeoNtTsS on 19.10.2022.
@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct DMDocumentView: View {
+struct DocumentView: View {
     @ObservedObject var viewModel: DMDocumentViewModel
     
     var body: some View {
         VStack(spacing: 0) {
+            deleteButton
             documentBody
             PaletteChooser(emojiFontSize: Constants.emojiDefaultFontSize)
         }
@@ -25,19 +26,19 @@ struct DMDocumentView: View {
                         .scaleEffect(zoomScale)
                         .position(convertFromEmojiCoordinate((0, 0), in: geometry))
                 )
-                
                 .gesture(doubleTapToZoom(in: geometry.size))
                 if self.viewModel.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(2.0)
                 }
                 ForEach(self.viewModel.emojis) { emoji in
-                    ZStack {
-                        Text(emoji.content)
-                            .font(.system(size: self.fontSize(for: emoji)))
-                            .scaleEffect(zoomScale)
-                            .position(self.position(for: emoji, in: geometry))
-                    }
-                    .memofy(isSelected: emoji.isSelected)
+                    Text(emoji.content)
+                        .font(.system(size: self.fontSize(for: emoji)))
+                        .scaleEffect(zoomScale)
+                        .position(self.position(for: emoji, in: geometry))
+                        .memofy(isSelected: emoji.isSelected)
+                        .onTapGesture {
+                            self.viewModel.onTapEmoji(emoji)
+                        }
                 }
             }
             .clipped()
@@ -46,6 +47,18 @@ struct DMDocumentView: View {
             }
             .gesture(self.panGesture().simultaneously(with: self.zoomGesture()))
         }
+    }
+    
+    var deleteButton: some View {
+        Button {
+            self.viewModel.deleteSelectedEmoji()
+        } label: {
+            Image(systemName: "trash.circle")
+                .font(.largeTitle)
+        }
+        .padding(.top, 5).padding(.bottom, 5)
+        .tint(.cyan)
+        .opacity(self.viewModel.hasSelectedEmoji ? 1 : 0)
     }
     
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {

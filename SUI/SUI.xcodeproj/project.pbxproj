@@ -20,8 +20,8 @@
 		2D4D31B22900058E009E7140 /* DMDocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */; };
 		2D4D31B829000BEB009E7140 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31B629000BEB009E7140 /* UtilityExtensions.swift */; };
 		2D4D31B929000BEB009E7140 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31B729000BEB009E7140 /* UtilityViews.swift */; };
-		2D4D31BD29002A98009E7140 /* DMDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31BC29002A98009E7140 /* DMDocumentView.swift */; };
-		2D4D31BF29017DC9009E7140 /* DMScrollEmojiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31BE29017DC9009E7140 /* DMScrollEmojiView.swift */; };
+		2D4D31BD29002A98009E7140 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31BC29002A98009E7140 /* DocumentView.swift */; };
+		2D4D31BF29017DC9009E7140 /* ScrollEmojiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4D31BE29017DC9009E7140 /* ScrollEmojiView.swift */; };
 		2D64A45628D3AAFD00F6AECD /* SUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A45528D3AAFD00F6AECD /* SUIApp.swift */; };
 		2D64A45828D3AAFD00F6AECD /* MGContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A45728D3AAFD00F6AECD /* MGContentView.swift */; };
 		2D64A45A28D3AAFE00F6AECD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D64A45928D3AAFE00F6AECD /* Assets.xcassets */; };
@@ -32,9 +32,10 @@
 		2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CC28EAD83700F5024C /* EmojiStock.swift */; };
 		2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CF28F05CFE00F5024C /* MGCardView.swift */; };
 		2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */; };
-		2DB59EBC29067FE500A361EF /* DMMemofy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBB29067FE500A361EF /* DMMemofy.swift */; };
-		2DB59EBE2907C13E00A361EF /* DMPaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */; };
+		2DB59EBC29067FE500A361EF /* Memofy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBB29067FE500A361EF /* Memofy.swift */; };
+		2DB59EBE2907C13E00A361EF /* PaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBD2907C13E00A361EF /* PaletteStore.swift */; };
 		2DB59EC02907FBB600A361EF /* PaletteChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */; };
+		2DB59EC229092FE300A361EF /* PaletteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EC129092FE300A361EF /* PaletteEditor.swift */; };
 		B0B79547FF613E194B1661AB /* Pods_SUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65FF96ABF3EFA2126FF86C0 /* Pods_SUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,8 +70,8 @@
 		2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMDocumentViewModel.swift; sourceTree = "<group>"; };
 		2D4D31B629000BEB009E7140 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 		2D4D31B729000BEB009E7140 /* UtilityViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
-		2D4D31BC29002A98009E7140 /* DMDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMDocumentView.swift; sourceTree = "<group>"; };
-		2D4D31BE29017DC9009E7140 /* DMScrollEmojiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMScrollEmojiView.swift; sourceTree = "<group>"; };
+		2D4D31BC29002A98009E7140 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
+		2D4D31BE29017DC9009E7140 /* ScrollEmojiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollEmojiView.swift; sourceTree = "<group>"; };
 		2D64A45228D3AAFD00F6AECD /* SUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D64A45528D3AAFD00F6AECD /* SUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIApp.swift; sourceTree = "<group>"; };
 		2D64A45728D3AAFD00F6AECD /* MGContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGContentView.swift; sourceTree = "<group>"; };
@@ -84,9 +85,10 @@
 		2D6984CC28EAD83700F5024C /* EmojiStock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiStock.swift; sourceTree = "<group>"; };
 		2D6984CF28F05CFE00F5024C /* MGCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGCardView.swift; sourceTree = "<group>"; };
 		2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
-		2DB59EBB29067FE500A361EF /* DMMemofy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMMemofy.swift; sourceTree = "<group>"; };
-		2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMPaletteStore.swift; sourceTree = "<group>"; };
+		2DB59EBB29067FE500A361EF /* Memofy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memofy.swift; sourceTree = "<group>"; };
+		2DB59EBD2907C13E00A361EF /* PaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteStore.swift; sourceTree = "<group>"; };
 		2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteChooser.swift; sourceTree = "<group>"; };
+		2DB59EC129092FE300A361EF /* PaletteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteEditor.swift; sourceTree = "<group>"; };
 		7AB7EACEC887AC0CEB7D5832 /* Pods-SUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUITests/Pods-SUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81491920A4045E3430728D43 /* Pods-SUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI.debug.xcconfig"; path = "Target Support Files/Pods-SUI/Pods-SUI.debug.xcconfig"; sourceTree = "<group>"; };
 		8349927BA54734D6A4606725 /* Pods-SUI-SUIUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI-SUIUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUI-SUIUITests/Pods-SUI-SUIUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -150,7 +152,7 @@
 				2D4D31AD28FFFFD8009E7140 /* DMModel.swift */,
 				2D4D31AF29000346009E7140 /* DMModel.Background.swift */,
 				2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */,
-				2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */,
+				2DB59EBD2907C13E00A361EF /* PaletteStore.swift */,
 				2D4D31BB29002A6E009E7140 /* Views */,
 				2DB59EB82902BC6700A361EF /* ViewModifiers */,
 			);
@@ -177,9 +179,8 @@
 		2D4D31BB29002A6E009E7140 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2D4D31BC29002A98009E7140 /* DMDocumentView.swift */,
-				2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */,
-				2D4D31BE29017DC9009E7140 /* DMScrollEmojiView.swift */,
+				2D4D31BC29002A98009E7140 /* DocumentView.swift */,
+				2DB59EC3290964D500A361EF /* Palette */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -259,10 +260,20 @@
 		2DB59EB82902BC6700A361EF /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
-				2DB59EBB29067FE500A361EF /* DMMemofy.swift */,
+				2DB59EBB29067FE500A361EF /* Memofy.swift */,
 				2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */,
 			);
 			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		2DB59EC3290964D500A361EF /* Palette */ = {
+			isa = PBXGroup;
+			children = (
+				2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */,
+				2DB59EC129092FE300A361EF /* PaletteEditor.swift */,
+				2D4D31BE29017DC9009E7140 /* ScrollEmojiView.swift */,
+			);
+			path = Palette;
 			sourceTree = "<group>";
 		};
 		736B82327460442E317976E0 /* Frameworks */ = {
@@ -509,17 +520,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DB59EBC29067FE500A361EF /* DMMemofy.swift in Sources */,
-				2DB59EBE2907C13E00A361EF /* DMPaletteStore.swift in Sources */,
+				2DB59EBC29067FE500A361EF /* Memofy.swift in Sources */,
+				2DB59EBE2907C13E00A361EF /* PaletteStore.swift in Sources */,
 				2D4D31B029000346009E7140 /* DMModel.Background.swift in Sources */,
 				2D64A45828D3AAFD00F6AECD /* MGContentView.swift in Sources */,
 				2D4D31B929000BEB009E7140 /* UtilityViews.swift in Sources */,
 				2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */,
+				2DB59EC229092FE300A361EF /* PaletteEditor.swift in Sources */,
 				2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */,
 				2D41628A28F56AD300FCD8B9 /* Pie.swift in Sources */,
 				2D4D31B22900058E009E7140 /* DMDocumentViewModel.swift in Sources */,
 				2D41628F28F822D600FCD8B9 /* Cardify.swift in Sources */,
-				2D4D31BF29017DC9009E7140 /* DMScrollEmojiView.swift in Sources */,
+				2D4D31BF29017DC9009E7140 /* ScrollEmojiView.swift in Sources */,
 				2DB59EC02907FBB600A361EF /* PaletteChooser.swift in Sources */,
 				2D41628828F41C0200FCD8B9 /* AspectVGrid.swift in Sources */,
 				2D1F850528D9BFB0007BD03A /* MGModel.swift in Sources */,
@@ -529,7 +541,7 @@
 				2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */,
 				2D64A45628D3AAFD00F6AECD /* SUIApp.swift in Sources */,
 				2D4D31AA28FEB433009E7140 /* MGCardModel.swift in Sources */,
-				2D4D31BD29002A98009E7140 /* DMDocumentView.swift in Sources */,
+				2D4D31BD29002A98009E7140 /* DocumentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

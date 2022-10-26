@@ -12,12 +12,12 @@ struct SUIApp: App {
     private let memoGameViewModel = MGViewModel()
     
     @StateObject var drawMojiViewModel = DMDocumentViewModel()
-    @StateObject var paletteStore = DMPaletteStore(name: "Default")
+    @StateObject var paletteStore = PaletteStore(name: "Default")
     
     var body: some Scene {
         WindowGroup {
 //            MGContentView(viewModel: self.memoGameViewModel)
-            DMDocumentView(viewModel: self.drawMojiViewModel)
+            DocumentView(viewModel: self.drawMojiViewModel)
                 .environmentObject(paletteStore)
         }
     }

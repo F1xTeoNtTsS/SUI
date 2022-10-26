@@ -75,6 +75,23 @@ extension Set where Element: Identifiable {
 // we want them to be "emoji only"
 // (thus isEmoji below)
 // and we don't want them to have repeated emojis
+// (thus withoutDuplicateCharacters below)
+
+extension String {
+    var removingDuplicateCharacters: String {
+        reduce(into: "") { sofar, element in
+            if !sofar.contains(element) {
+                sofar.append(element)
+            }
+        }
+    }
+}
+
+// some extensions to String and Character
+// to help us with managing our Strings of emojis
+// we want them to be "emoji only"
+// (thus isEmoji below)
+// and we don't want them to have repeated emojis
 // (thus withNoRepeatedCharacters below)
 
 extension String {

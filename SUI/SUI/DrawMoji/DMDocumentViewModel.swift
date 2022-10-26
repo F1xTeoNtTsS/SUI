@@ -34,6 +34,7 @@ final class DMDocumentViewModel: ObservableObject {
     
     var emojis: [DMModel.Emoji] { self.model.emojis }
     var background: DMModel.Background { self.model.background }
+    var hasSelectedEmoji: Bool { self.model.hasSelectedEmoji }
     
     private var autosaveTimer: Timer?
     
@@ -84,6 +85,14 @@ final class DMDocumentViewModel: ObservableObject {
             self.model.emojis[index].size = Int((CGFloat(self.model.emojis[index].size) * scale)
                 .rounded(.toNearestOrAwayFromZero))
         }
+    }
+    
+    func onTapEmoji(_ emoji: Emoji) {
+        self.model.onTapEmoji(emoji)
+    }
+    
+    func deleteSelectedEmoji() {
+        self.model.deleteSelectedEmoji()
     }
     
     private func fetchBackgroundImageDataIfNecessary() {

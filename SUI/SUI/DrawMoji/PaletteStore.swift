@@ -1,5 +1,5 @@
 //
-//  DMPaletteStore.swift
+//  PaletteStore.swift
 //  SUI
 //
 //  Created by F1xTeoNtTsS on 25.10.2022.
@@ -13,7 +13,7 @@ struct Palette: Identifiable, Codable {
     var id: Int
 }
 
-class DMPaletteStore: ObservableObject {
+class PaletteStore: ObservableObject {
     let name: String
     @Published var palettes = [Palette]() {
         didSet {

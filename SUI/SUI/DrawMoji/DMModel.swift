@@ -12,6 +12,12 @@ struct DMModel: Codable {
     var emojis = [Emoji]()
     
     private var uniqueEmojiId = 0
+    var hasSelectedEmoji: Bool {
+        for emoji in emojis where emoji.isSelected {
+            return true
+        }
+        return false
+    }
     
     init() { }
     
@@ -53,5 +59,15 @@ struct DMModel: Codable {
                                  y: location.y, 
                                  size: size, 
                                  id: self.uniqueEmojiId))
+    }
+    
+    mutating func onTapEmoji(_ emoji: Emoji) {
+        if let index = self.emojis.index(matching: emoji) {
+            self.emojis[index].isSelected.toggle()
+        }
+    }
+    
+    mutating func deleteSelectedEmoji() {
+        
     }
 }

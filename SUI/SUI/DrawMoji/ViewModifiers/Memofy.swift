@@ -12,7 +12,11 @@ struct Memofy: ViewModifier {
     var isSelected: Bool
     
     func body(content: Content) -> some View {
-        content
+        if self.isSelected {
+            content.colorMultiply(.cyan)
+        } else {
+            content
+        }
     }
 }
 
