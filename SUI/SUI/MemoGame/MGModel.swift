@@ -7,10 +7,6 @@
 
 import Foundation
 
-public enum Theme: String, CaseIterable {
-    case faces, flags, vehicles, animals, food, devices
-}
-
 struct MGModel<CardContent: Equatable> {
     private(set) var cards: [MGCardModel<CardContent>]
     private(set) var numberOfCardsOfSet: Int

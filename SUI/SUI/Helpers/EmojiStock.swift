@@ -7,6 +7,10 @@
 
 import Foundation
 
+public enum Theme: String, CaseIterable {
+    case faces, flags, vehicles, animals, food, devices
+}
+
 class EmojiStock {
     static func getEmoji(theme: Theme) -> [String] {
         switch theme {

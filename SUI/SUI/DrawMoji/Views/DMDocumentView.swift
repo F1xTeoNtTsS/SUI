@@ -9,12 +9,11 @@ import SwiftUI
 
 struct DMDocumentView: View {
     @ObservedObject var viewModel: DMDocumentViewModel
-    @State var orientation = UIDevice.current.orientation
     
     var body: some View {
         VStack(spacing: 0) {
             documentBody
-            palette
+            PaletteChooser(emojiFontSize: Constants.emojiDefaultFontSize)
         }
     }
     
@@ -32,11 +31,13 @@ struct DMDocumentView: View {
                     ProgressView().scaleEffect(2.0)
                 }
                 ForEach(self.viewModel.emojis) { emoji in
-                    Text(emoji.content)
-                        .font(.system(size: self.fontSize(for: emoji)))
-                        .scaleEffect(zoomScale)
-                        .position(self.position(for: emoji, in: geometry))
-                        .memofy(isSelected: emoji.isSelected)
+                    ZStack {
+                        Text(emoji.content)
+                            .font(.system(size: self.fontSize(for: emoji)))
+                            .scaleEffect(zoomScale)
+                            .position(self.position(for: emoji, in: geometry))
+                    }
+                    .memofy(isSelected: emoji.isSelected)
                 }
             }
             .clipped()
@@ -45,13 +46,6 @@ struct DMDocumentView: View {
             }
             .gesture(self.panGesture().simultaneously(with: self.zoomGesture()))
         }
-    }
-    
-    private let testEmoji = "🤔😶‍🌫️😨🫡🤫😴🤢🤠🥴😈👽💩👻☠️😻😺🎃🤖👾👹👺👍👉🫀🫁🧠🫂👣👁"
-    
-    var palette: some View {
-        DMScrollEmojiView(emojis: testEmoji)
-            .font(.system(size: Constants.emojiDefaultFontSize))
     }
     
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {

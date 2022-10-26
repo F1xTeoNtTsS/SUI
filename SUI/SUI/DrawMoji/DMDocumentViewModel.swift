@@ -46,7 +46,7 @@ final class DMDocumentViewModel: ObservableObject {
     
     private func autosave() {
         guard let url = Autosave.url else { return }
-        save(to: url)
+        self.save(to: url)
     }
     
     private func save(to url: URL) {

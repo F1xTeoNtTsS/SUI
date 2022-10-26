@@ -33,6 +33,8 @@
 		2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CF28F05CFE00F5024C /* MGCardView.swift */; };
 		2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */; };
 		2DB59EBC29067FE500A361EF /* DMMemofy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBB29067FE500A361EF /* DMMemofy.swift */; };
+		2DB59EBE2907C13E00A361EF /* DMPaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */; };
+		2DB59EC02907FBB600A361EF /* PaletteChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */; };
 		B0B79547FF613E194B1661AB /* Pods_SUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65FF96ABF3EFA2126FF86C0 /* Pods_SUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +85,8 @@
 		2D6984CF28F05CFE00F5024C /* MGCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGCardView.swift; sourceTree = "<group>"; };
 		2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		2DB59EBB29067FE500A361EF /* DMMemofy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMMemofy.swift; sourceTree = "<group>"; };
+		2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMPaletteStore.swift; sourceTree = "<group>"; };
+		2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteChooser.swift; sourceTree = "<group>"; };
 		7AB7EACEC887AC0CEB7D5832 /* Pods-SUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUITests/Pods-SUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81491920A4045E3430728D43 /* Pods-SUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI.debug.xcconfig"; path = "Target Support Files/Pods-SUI/Pods-SUI.debug.xcconfig"; sourceTree = "<group>"; };
 		8349927BA54734D6A4606725 /* Pods-SUI-SUIUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI-SUIUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUI-SUIUITests/Pods-SUI-SUIUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -128,7 +132,6 @@
 				2D1F850628D9BFDA007BD03A /* MGViewModel.swift */,
 				2D6984CE28F05CED00F5024C /* Views */,
 				2D41628D28F8229100FCD8B9 /* ViewModifiers */,
-				2D4D31BA29002A42009E7140 /* Helpers */,
 			);
 			path = MemoGame;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 				2D4D31AD28FFFFD8009E7140 /* DMModel.swift */,
 				2D4D31AF29000346009E7140 /* DMModel.Background.swift */,
 				2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */,
+				2DB59EBD2907C13E00A361EF /* DMPaletteStore.swift */,
 				2D4D31BB29002A6E009E7140 /* Views */,
 				2DB59EB82902BC6700A361EF /* ViewModifiers */,
 			);
@@ -174,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				2D4D31BC29002A98009E7140 /* DMDocumentView.swift */,
+				2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */,
 				2D4D31BE29017DC9009E7140 /* DMScrollEmojiView.swift */,
 			);
 			path = Views;
@@ -207,6 +212,7 @@
 				2D64A45528D3AAFD00F6AECD /* SUIApp.swift */,
 				2D1F850328D9BF89007BD03A /* MemoGame */,
 				2D4D31AC28FFFEF3009E7140 /* DrawMoji */,
+				2D4D31BA29002A42009E7140 /* Helpers */,
 				2D4D31B529000A28009E7140 /* Extensions */,
 				2D64A45928D3AAFE00F6AECD /* Assets.xcassets */,
 				2D64A45B28D3AAFE00F6AECD /* Preview Content */,
@@ -504,6 +510,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DB59EBC29067FE500A361EF /* DMMemofy.swift in Sources */,
+				2DB59EBE2907C13E00A361EF /* DMPaletteStore.swift in Sources */,
 				2D4D31B029000346009E7140 /* DMModel.Background.swift in Sources */,
 				2D64A45828D3AAFD00F6AECD /* MGContentView.swift in Sources */,
 				2D4D31B929000BEB009E7140 /* UtilityViews.swift in Sources */,
@@ -513,6 +520,7 @@
 				2D4D31B22900058E009E7140 /* DMDocumentViewModel.swift in Sources */,
 				2D41628F28F822D600FCD8B9 /* Cardify.swift in Sources */,
 				2D4D31BF29017DC9009E7140 /* DMScrollEmojiView.swift in Sources */,
+				2DB59EC02907FBB600A361EF /* PaletteChooser.swift in Sources */,
 				2D41628828F41C0200FCD8B9 /* AspectVGrid.swift in Sources */,
 				2D1F850528D9BFB0007BD03A /* MGModel.swift in Sources */,
 				2D4D31AE28FFFFD8009E7140 /* DMModel.swift in Sources */,

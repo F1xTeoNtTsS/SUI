@@ -10,10 +10,15 @@ import SwiftUI
 @main
 struct SUIApp: App {
     private let memoGameViewModel = MGViewModel()
+    
+    @StateObject var drawMojiViewModel = DMDocumentViewModel()
+    @StateObject var paletteStore = DMPaletteStore(name: "Default")
+    
     var body: some Scene {
         WindowGroup {
 //            MGContentView(viewModel: self.memoGameViewModel)
-            DMDocumentView(viewModel: DMDocumentViewModel())
+            DMDocumentView(viewModel: self.drawMojiViewModel)
+                .environmentObject(paletteStore)
         }
     }
 }
