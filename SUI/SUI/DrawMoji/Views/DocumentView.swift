@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DocumentView: View {
     @ObservedObject var viewModel: DMDocumentViewModel
+    @State private var backgroundImageFetchAlertIsShown = false
+    @State private var badUrlString: String?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -18,7 +20,7 @@ struct DocumentView: View {
         }
     }
     
-    var documentBody: some View {
+    private var documentBody: some View {
         GeometryReader { geometry in
             ZStack {
                 Color.white.overlay(
@@ -46,10 +48,22 @@ struct DocumentView: View {
                 drop(providers: providers, at: location, in: geometry)
             }
             .gesture(self.panGesture().simultaneously(with: self.zoomGesture()))
+            .alert(isPresented: $backgroundImageFetchAlertIsShown) { 
+                self.alert(url: self.badUrlString ?? "")
+            }
+            .onChange(of: self.viewModel.backgroundImageFetchStatus) { status in
+                switch status {
+                case .failed(let url):
+                    self.badUrlString = url.absoluteString
+                    self.backgroundImageFetchAlertIsShown = true
+                default:
+                    break
+                }
+            }
         }
     }
     
-    var deleteButton: some View {
+    private var deleteButton: some View {
         Button {
             self.viewModel.deleteSelectedEmoji()
         } label: {
@@ -59,6 +73,12 @@ struct DocumentView: View {
         .padding(.top, 5).padding(.bottom, 5)
         .tint(.cyan)
         .opacity(self.viewModel.hasSelectedEmoji ? 1 : 0)
+    }
+    
+    private func alert(url: String) -> Alert {
+        Alert(title: Text("Failed load image from URL"),
+              message: Text("URL: \(url)"),
+              dismissButton: .default(Text("OK")))
     }
     
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {
@@ -152,14 +172,14 @@ struct DocumentView: View {
     }
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) { 
-            if let image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
-                let hZoom = image.size.width / size.width
-                let vZoom = image.size.height / size.height
-                withAnimation { 
-                    self.steadyStatePanOffset = .zero
-                    self.steadyStateZoomScale = min(hZoom, vZoom)
-                }
+        if let image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
+            let hZoom = image.size.width / size.width
+            let vZoom = image.size.height / size.height
+            withAnimation { 
+                self.steadyStatePanOffset = .zero
+                self.steadyStateZoomScale = min(hZoom, vZoom)
             }
+        }
     }
     
     private enum Constants {

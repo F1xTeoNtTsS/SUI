@@ -9,16 +9,39 @@ import SwiftUI
 
 @main
 struct SUIApp: App {
-    private let memoGameViewModel = MGViewModel()
-    
+    @StateObject var memoGameViewModel = MGViewModel()
     @StateObject var drawMojiViewModel = DMDocumentViewModel()
     @StateObject var paletteStore = PaletteStore(name: "Default")
     
     var body: some Scene {
         WindowGroup {
-//            MGContentView(viewModel: self.memoGameViewModel)
-            DocumentView(viewModel: self.drawMojiViewModel)
-                .environmentObject(paletteStore)
+            NavigationView {
+                List {
+                    Text("Choose your game 🎮")
+                        .font(.system(.largeTitle))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Section {
+                        NavigationLink(destination: MGContentView(viewModel: self.memoGameViewModel)) {
+                            self.makeGameSection(name: "MemoGame", 
+                                                 description: "Memoji card pair guessing game")
+                        }
+                        NavigationLink(destination: DocumentView(viewModel: self.drawMojiViewModel)
+                            .environmentObject(paletteStore)) { 
+                                self.makeGameSection(name: "DrawMoji", 
+                                                     description: "Memoji drawing game")
+                            }
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+    
+    private func makeGameSection(name: String, description: String) -> some View {
+        VStack(alignment: .leading) {
+            Text(name).font(.system(.largeTitle))
+            Text(description)
         }
     }
 }

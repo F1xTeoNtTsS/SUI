@@ -68,6 +68,6 @@ struct DMModel: Codable {
     }
     
     mutating func deleteSelectedEmoji() {
-        
+        self.emojis = self.emojis.filter { !$0.isSelected }
     }
 }

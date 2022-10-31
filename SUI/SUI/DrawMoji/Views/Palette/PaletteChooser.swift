@@ -12,8 +12,10 @@ struct PaletteChooser: View {
     var emojiFont: Font { .system(size: emojiFontSize) }
     
     @EnvironmentObject var store: PaletteStore
+    
     @State var choosenPaletteIndex = 0
     @State var paletteEditing = false
+    @State var paletteManaging = false
     
     var body: some View {
         HStack {
@@ -39,7 +41,7 @@ struct PaletteChooser: View {
     }
     
     @ViewBuilder
-    var contextMenu: some View {
+    private var contextMenu: some View {
         AnimatedActionButton(title: "Edit", systemImage: "pencil") { 
             self.paletteEditing = true
         }
@@ -50,10 +52,13 @@ struct PaletteChooser: View {
         AnimatedActionButton(title: "Delete", systemImage: "minus.circle") { 
             self.choosenPaletteIndex = store.removePalette(at: self.choosenPaletteIndex)
         }
+        AnimatedActionButton(title: "Manager", systemImage: "slider.vertical.3") { 
+            self.paletteManaging = true
+        }
         goToMenu
     }
     
-    var goToMenu: some View {
+    private var goToMenu: some View {
         Menu {
             ForEach(self.store.palettes) { palette in
                 AnimatedActionButton(title: palette.name.capitalized) { 
@@ -77,6 +82,9 @@ struct PaletteChooser: View {
         .transition(self.rollTransition)
         .popover(isPresented: $paletteEditing) { 
             PaletteEditor(palette: $store.palettes[self.choosenPaletteIndex])
+        }
+        .sheet(isPresented: $paletteManaging) { 
+            PaletteManager()
         }
     }
     

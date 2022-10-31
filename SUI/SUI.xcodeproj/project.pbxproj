@@ -31,6 +31,7 @@
 		2D64A47328D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */; };
 		2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CC28EAD83700F5024C /* EmojiStock.swift */; };
 		2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CF28F05CFE00F5024C /* MGCardView.swift */; };
+		2D94D205290FD08300B1EFC4 /* PaletteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D94D204290FD08300B1EFC4 /* PaletteManager.swift */; };
 		2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */; };
 		2DB59EBC29067FE500A361EF /* Memofy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBB29067FE500A361EF /* Memofy.swift */; };
 		2DB59EBE2907C13E00A361EF /* PaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EBD2907C13E00A361EF /* PaletteStore.swift */; };
@@ -84,6 +85,7 @@
 		2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2D6984CC28EAD83700F5024C /* EmojiStock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiStock.swift; sourceTree = "<group>"; };
 		2D6984CF28F05CFE00F5024C /* MGCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGCardView.swift; sourceTree = "<group>"; };
+		2D94D204290FD08300B1EFC4 /* PaletteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteManager.swift; sourceTree = "<group>"; };
 		2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		2DB59EBB29067FE500A361EF /* Memofy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memofy.swift; sourceTree = "<group>"; };
 		2DB59EBD2907C13E00A361EF /* PaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteStore.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 		2DB59EC3290964D500A361EF /* Palette */ = {
 			isa = PBXGroup;
 			children = (
+				2D94D204290FD08300B1EFC4 /* PaletteManager.swift */,
 				2DB59EBF2907FBB600A361EF /* PaletteChooser.swift */,
 				2DB59EC129092FE300A361EF /* PaletteEditor.swift */,
 				2D4D31BE29017DC9009E7140 /* ScrollEmojiView.swift */,
@@ -533,6 +536,7 @@
 				2D41628F28F822D600FCD8B9 /* Cardify.swift in Sources */,
 				2D4D31BF29017DC9009E7140 /* ScrollEmojiView.swift in Sources */,
 				2DB59EC02907FBB600A361EF /* PaletteChooser.swift in Sources */,
+				2D94D205290FD08300B1EFC4 /* PaletteManager.swift in Sources */,
 				2D41628828F41C0200FCD8B9 /* AspectVGrid.swift in Sources */,
 				2D1F850528D9BFB0007BD03A /* MGModel.swift in Sources */,
 				2D4D31AE28FFFFD8009E7140 /* DMModel.swift in Sources */,

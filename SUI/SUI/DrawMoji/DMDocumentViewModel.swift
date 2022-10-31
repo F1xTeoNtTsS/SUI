@@ -20,8 +20,8 @@ final class DMDocumentViewModel: ObservableObject {
         }
     }
     
-    @Published var backgroundImage: UIImage?
-    @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
+    @Published private(set) var backgroundImage: UIImage?
+    @Published private(set) var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
     
     init() {
         guard let url = Autosave.url, let autosavedDrawMoji = try? DMModel(url: url) else {
@@ -73,20 +73,6 @@ final class DMDocumentViewModel: ObservableObject {
         self.model.addEmoji(content: content, at: (x: location.x, y: location.y), size: size)
     }
     
-    func moveEmoji(_ emoji: Emoji, by offset: CGSize) {
-        if let index = self.model.emojis.index(matching: emoji) {
-            self.model.emojis[index].x = Int(offset.width)
-            self.model.emojis[index].y = Int(offset.height)
-        }
-    }
-    
-    func scaleEmoji(_ emoji: Emoji, by scale: CGFloat) {
-        if let index = self.model.emojis.index(matching: emoji) {
-            self.model.emojis[index].size = Int((CGFloat(self.model.emojis[index].size) * scale)
-                .rounded(.toNearestOrAwayFromZero))
-        }
-    }
-    
     func onTapEmoji(_ emoji: Emoji) {
         self.model.onTapEmoji(emoji)
     }
@@ -103,11 +89,14 @@ final class DMDocumentViewModel: ObservableObject {
         case .url(let url):
             self.backgroundImageFetchStatus = .fetching
             DispatchQueue.global(qos: .userInteractive).async {
-                if let data = try? Data(contentsOf: url) {
+                if let imageData = try? Data(contentsOf: url) {
                     DispatchQueue.main.async { [weak self] in
                         if self?.model.background == DMModel.Background.url(url) {
                             self?.backgroundImageFetchStatus = .idle
-                            self?.backgroundImage = UIImage(data: data)
+                            self?.backgroundImage = UIImage(data: imageData)
+                            if self?.backgroundImage == nil {
+                                self?.backgroundImageFetchStatus = .failed(url)
+                            }
                         }
                     }
                     
@@ -120,9 +109,10 @@ final class DMDocumentViewModel: ObservableObject {
 }
 
 extension DMDocumentViewModel {
-    enum BackgroundImageFetchStatus {
+    enum BackgroundImageFetchStatus: Equatable {
         case idle
         case fetching
+        case failed(URL)
     }
     
     private struct Autosave {

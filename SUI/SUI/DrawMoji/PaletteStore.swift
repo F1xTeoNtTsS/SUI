@@ -13,7 +13,7 @@ struct Palette: Identifiable, Codable {
     var id: Int
 }
 
-class PaletteStore: ObservableObject {
+final class PaletteStore: ObservableObject {
     let name: String
     @Published var palettes = [Palette]() {
         didSet {
@@ -68,7 +68,7 @@ class PaletteStore: ObservableObject {
     
     private func restoreFromUserDefaults() {
         if let jsonData = UserDefaults.standard.data(forKey: self.userDefaultsKey),
-        let decodedPalettes = try? JSONDecoder().decode([Palette].self, from: jsonData) {
+           let decodedPalettes = try? JSONDecoder().decode([Palette].self, from: jsonData) {
             self.palettes = decodedPalettes
         }        
     }
