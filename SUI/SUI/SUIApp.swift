@@ -18,7 +18,7 @@ struct SUIApp: App {
             NavigationView {
                 List {
                     Text("Choose your game 🎮")
-                        .font(.system(.largeTitle))
+                        .font(.system(.title))
                         .frame(maxWidth: .infinity, alignment: .center)
                     Section {
                         NavigationLink(destination: MGContentView(viewModel: self.memoGameViewModel)) {
@@ -40,7 +40,7 @@ struct SUIApp: App {
     
     private func makeGameSection(name: String, description: String) -> some View {
         VStack(alignment: .leading) {
-            Text(name).font(.system(.largeTitle))
+            Text(name).font(.system(.title))
             Text(description)
         }
     }

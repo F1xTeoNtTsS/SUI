@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ConfettiSwiftUI
 
 final class MGViewModel: ObservableObject {
     typealias Card = MGCardModel<String>
@@ -47,7 +48,6 @@ final class MGViewModel: ObservableObject {
         }
         
         emoji = EmojiStock.getEmoji(theme: currentTheme).shuffled()
-        
         return MGModel<String>(numberOfCardsPairs: numberOfCardsPairs,
                                currentTheme: currentTheme) { pairIndex in
             while pairIndex < emoji.count {

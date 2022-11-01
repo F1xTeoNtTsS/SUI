@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ConfettiSwiftUI
 
 struct MGContentView: View {
     @ObservedObject var viewModel: MGViewModel
@@ -15,6 +16,7 @@ struct MGContentView: View {
     @State private var selectedTheme: Theme
     @State private var numberOfCardsPairs: Int
     @State private var dealt = Set<Int>()
+    @State private var confettiCounter = 1
     
     @State private var newGamePopoverIsShown = false
     @State private var endGameAlertIsShown = false
@@ -29,7 +31,6 @@ struct MGContentView: View {
         VStack {
             self.header
             self.gameBody
-            //            Spacer(minLength: Constants.spacerMinLength)
             self.footer
         }
         .foregroundColor(.cyan)
@@ -38,10 +39,19 @@ struct MGContentView: View {
         
         .onChange(of: self.viewModel.isGameEnded) { newValue in
             self.endGameAlertIsShown = newValue
+            if self.viewModel.isGameEnded, self.viewModel.score > 0 {
+                self.confettiCounter += 1
+            }
         }
         .alert(isPresented: $endGameAlertIsShown, content: {
             self.makeEndGameAlert()
         })
+        .confettiCannon(counter: $confettiCounter,
+                        confettis: [.text("🤗"), .text("👍"), .text("👻"), .text("👽"), .text("💎"), .text("🖤")],
+                        confettiSize: 25,
+                        radius: 500.0, 
+                        repetitions: 2, 
+                        repetitionInterval: 0.3)
     }
     
     private var header: some View {
@@ -134,7 +144,6 @@ struct MGContentView: View {
             }
             Divider()
             VStack(spacing: 0) {
-                
                 Picker("Pairs", selection: $numberOfCardsPairs) {
                     ForEach(2...15, id: \.self) {
                         Text("\($0)").font(.title2).foregroundColor(.cyan)
