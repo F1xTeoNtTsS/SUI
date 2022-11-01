@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DocumentView: View {
     @ObservedObject var viewModel: DMDocumentViewModel
+    @State var orientation = UIDeviceOrientation.unknown
     @State private var backgroundImageFetchAlertIsShown = false
     @State private var badUrlString: String?
     
@@ -59,6 +60,9 @@ struct DocumentView: View {
                 default:
                     break
                 }
+            }
+            .onReceive(self.viewModel.$backgroundImage) { image in
+                self.zoomToFit(image, in: geometry.size)
             }
         }
     }

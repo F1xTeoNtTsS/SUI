@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 final class DMDocumentViewModel: ObservableObject {
     typealias Emoji = DMModel.Emoji
@@ -81,6 +82,8 @@ final class DMDocumentViewModel: ObservableObject {
         self.model.deleteSelectedEmoji()
     }
     
+    private var backgroundImageFetchCancellable: AnyCancellable?
+    
     private func fetchBackgroundImageDataIfNecessary() {
         self.backgroundImage = nil
         switch self.model.background {
@@ -88,20 +91,18 @@ final class DMDocumentViewModel: ObservableObject {
             break
         case .url(let url):
             self.backgroundImageFetchStatus = .fetching
-            DispatchQueue.global(qos: .userInteractive).async {
-                if let imageData = try? Data(contentsOf: url) {
-                    DispatchQueue.main.async { [weak self] in
-                        if self?.model.background == DMModel.Background.url(url) {
-                            self?.backgroundImageFetchStatus = .idle
-                            self?.backgroundImage = UIImage(data: imageData)
-                            if self?.backgroundImage == nil {
-                                self?.backgroundImageFetchStatus = .failed(url)
-                            }
-                        }
-                    }
-                    
+            self.backgroundImageFetchCancellable?.cancel()
+            let session = URLSession.shared
+            let publisher = session.dataTaskPublisher(for: url)
+                .map { (data, _) in UIImage(data: data) }
+                .replaceError(with: nil)
+                .receive(on: DispatchQueue.main)
+            
+            backgroundImageFetchCancellable = publisher
+                .sink { [weak self] image in 
+                    self?.backgroundImage = image
+                    self?.backgroundImageFetchStatus = (image == nil) ? .failed(url) : .idle
                 }
-            }
         case .imageData(let data):
             self.backgroundImage = UIImage(data: data)
         }
