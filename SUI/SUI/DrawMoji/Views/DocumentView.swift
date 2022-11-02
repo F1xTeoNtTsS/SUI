@@ -62,10 +62,14 @@ struct DocumentView: View {
                 }
             }
             .onReceive(self.viewModel.$backgroundImage) { image in
-                self.zoomToFit(image, in: geometry.size)
+                if autozoom {
+                    self.zoomToFit(image, in: geometry.size)
+                }
             }
         }
     }
+    
+    @State private var autozoom = false
     
     private var deleteButton: some View {
         Button {
@@ -87,6 +91,7 @@ struct DocumentView: View {
     
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {
         var found = providers.loadFirstObject(ofType: URL.self) { url in
+            self.autozoom = true
             self.viewModel.setBackground(.url(url.imageURL))
         }
         if !found {
