@@ -134,7 +134,9 @@ struct DocumentView: View {
     
     // MARK: - Gestures
     
-    @State private var steadyStatePanOffset = CGSize.zero
+    @SceneStorage("DocumentView.steadyStatePanOffset")
+    private var steadyStatePanOffset = CGSize.zero
+    
     @GestureState private var gesturePanOffset = CGSize.zero
     
     private var panOffset: CGSize {

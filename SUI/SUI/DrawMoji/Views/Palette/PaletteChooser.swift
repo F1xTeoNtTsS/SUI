@@ -13,7 +13,9 @@ struct PaletteChooser: View {
     
     @EnvironmentObject var store: PaletteStore
     
-    @State var choosenPaletteIndex = 0
+    @SceneStorage("PaletteChooser.choosenPaletteIndex")
+    var choosenPaletteIndex = 0
+    
     @State var paletteEditing = false
     @State var paletteManaging = false
     
