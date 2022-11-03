@@ -27,7 +27,6 @@ extension DMModel {
             } else {
                 self = .blank
             }
-            
         }
         
         func encode(to encoder: Encoder) throws {

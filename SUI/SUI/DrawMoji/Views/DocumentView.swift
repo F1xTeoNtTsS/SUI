@@ -13,11 +13,17 @@ struct DocumentView: View {
     @State private var backgroundImageFetchAlertIsShown = false
     @State private var badUrlString: String?
     
+    @ScaledMetric var emojiDefaultFontSize: CGFloat = 40
+    
     var body: some View {
         VStack(spacing: 0) {
-            deleteButton
+            HStack {
+                ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
+                    self.makeActionButton(action: action)
+                }
+            }
             documentBody
-            PaletteChooser(emojiFontSize: Constants.emojiDefaultFontSize)
+            PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
         }
     }
     
@@ -42,6 +48,7 @@ struct DocumentView: View {
                         .onTapGesture {
                             self.viewModel.onTapEmoji(emoji)
                         }
+                        .gesture(self.panEmojiGesture(emoji, geometry))
                 }
             }
             .clipped()
@@ -71,14 +78,14 @@ struct DocumentView: View {
     
     @State private var autozoom = false
     
-    private var deleteButton: some View {
+    private func makeActionButton(action: DMEmoji.Actions) -> some View {
         Button {
-            self.viewModel.deleteSelectedEmoji()
+            self.viewModel.changeEmoji(action: action)
         } label: {
-            Image(systemName: "trash.circle")
+            Image(systemName: action.getSystemImageName())
                 .font(.largeTitle)
         }
-        .padding(.top, 5).padding(.bottom, 5)
+        .padding(.top).padding(.bottom)
         .tint(.cyan)
         .opacity(self.viewModel.hasSelectedEmoji ? 1 : 0)
     }
@@ -107,14 +114,14 @@ struct DocumentView: View {
                 if let emoji = string.first, emoji.isEmoji {
                     self.viewModel.addEmoji(content: String(emoji), 
                                             at: converToEmojiCoordinates(location, in: geometry),
-                                            size: Int(Constants.emojiDefaultFontSize / zoomScale))
+                                            size: Int(self.emojiDefaultFontSize / zoomScale))
                 }
             }
         }
         return found
     }
     
-    private func position(for emoji: DMModel.Emoji, in geometry: GeometryProxy) -> CGPoint {
+    private func position(for emoji: DMEmoji, in geometry: GeometryProxy) -> CGPoint {
         self.convertFromEmojiCoordinate((emoji.x, emoji.y), in: geometry)
     }
     
@@ -133,11 +140,11 @@ struct DocumentView: View {
             y: center.y + CGFloat(location.y) * zoomScale + self.panOffset.height)
     }
     
-    private func fontSize(for emoji: DMModel.Emoji) -> CGFloat {
+    private func fontSize(for emoji: DMEmoji) -> CGFloat {
         CGFloat(emoji.size)
     }
     
-    // MARK: - Gestures
+    // MARK: - Background gestures
     
     @SceneStorage("DocumentView.steadyStatePanOffset")
     private var steadyStatePanOffset = CGSize.zero
@@ -184,8 +191,8 @@ struct DocumentView: View {
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) { 
         if let image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
-            let hZoom = image.size.width / size.width
-            let vZoom = image.size.height / size.height
+            let hZoom = (image.size.width / size.width) * 1.5
+            let vZoom = (image.size.height / size.height) * 1.5
             withAnimation { 
                 self.steadyStatePanOffset = .zero
                 self.steadyStateZoomScale = min(hZoom, vZoom)
@@ -193,7 +200,20 @@ struct DocumentView: View {
         }
     }
     
-    private enum Constants {
-        static let emojiDefaultFontSize: CGFloat = 40
+    // MARK: - Emojis gestures
+    
+    private func panEmojiGesture(_ emoji: DMEmoji, _ geometry: GeometryProxy) -> some Gesture {
+        DragGesture()
+            .onChanged({ finalDragGestureValue in
+                let coordinates = self.converToEmojiCoordinates(finalDragGestureValue.location, in: geometry)
+                self.viewModel.changeEmojiPosition(emoji, at: coordinates)
+            })
+    }
+    
+    private func tapEmoji(emoji: DMEmoji) -> some Gesture {
+        TapGesture(count: 1)
+            .onEnded {
+                self.viewModel.onTapEmoji(emoji)
+            }
     }
 }

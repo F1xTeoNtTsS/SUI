@@ -31,6 +31,7 @@
 		2D64A47328D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */; };
 		2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CC28EAD83700F5024C /* EmojiStock.swift */; };
 		2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6984CF28F05CFE00F5024C /* MGCardView.swift */; };
+		2D83DC8E291403EE0032620F /* DMEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D83DC8D291403EE0032620F /* DMEmoji.swift */; };
 		2D94D205290FD08300B1EFC4 /* PaletteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D94D204290FD08300B1EFC4 /* PaletteManager.swift */; };
 		2D94D2082910ED0200B1EFC4 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2D94D2072910ED0200B1EFC4 /* ConfettiSwiftUI */; };
 		2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */; };
@@ -86,6 +87,7 @@
 		2D64A47228D3AAFE00F6AECD /* SUIUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2D6984CC28EAD83700F5024C /* EmojiStock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiStock.swift; sourceTree = "<group>"; };
 		2D6984CF28F05CFE00F5024C /* MGCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGCardView.swift; sourceTree = "<group>"; };
+		2D83DC8D291403EE0032620F /* DMEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEmoji.swift; sourceTree = "<group>"; };
 		2D94D204290FD08300B1EFC4 /* PaletteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteManager.swift; sourceTree = "<group>"; };
 		2DB59EB92902BC8C00A361EF /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		2DB59EBB29067FE500A361EF /* Memofy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memofy.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				2D4D31AD28FFFFD8009E7140 /* DMModel.swift */,
+				2D83DC8D291403EE0032620F /* DMEmoji.swift */,
 				2D4D31AF29000346009E7140 /* DMModel.Background.swift */,
 				2D4D31B12900058E009E7140 /* DMDocumentViewModel.swift */,
 				2DB59EBD2907C13E00A361EF /* PaletteStore.swift */,
@@ -552,6 +555,7 @@
 				2D4D31B829000BEB009E7140 /* UtilityExtensions.swift in Sources */,
 				2D6984D028F05CFE00F5024C /* MGCardView.swift in Sources */,
 				2D64A45628D3AAFD00F6AECD /* SUIApp.swift in Sources */,
+				2D83DC8E291403EE0032620F /* DMEmoji.swift in Sources */,
 				2D4D31AA28FEB433009E7140 /* MGCardModel.swift in Sources */,
 				2D4D31BD29002A98009E7140 /* DocumentView.swift in Sources */,
 			);

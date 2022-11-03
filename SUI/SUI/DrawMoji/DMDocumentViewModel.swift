@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 final class DMDocumentViewModel: ObservableObject {
-    typealias Emoji = DMModel.Emoji
+    typealias Emoji = DMEmoji
     typealias Background = DMModel.Background
     
     @Published private(set) var model: DMModel {
@@ -33,7 +33,7 @@ final class DMDocumentViewModel: ObservableObject {
         self.fetchBackgroundImageDataIfNecessary()
     }
     
-    var emojis: [DMModel.Emoji] { self.model.emojis }
+    var emojis: [DMEmoji] { self.model.emojis }
     var background: DMModel.Background { self.model.background }
     var hasSelectedEmoji: Bool { self.model.hasSelectedEmoji }
     
@@ -78,8 +78,12 @@ final class DMDocumentViewModel: ObservableObject {
         self.model.onTapEmoji(emoji)
     }
     
-    func deleteSelectedEmoji() {
-        self.model.deleteSelectedEmoji()
+    func changeEmojiPosition(_ emoji: Emoji, at location: (x: Int, y: Int)) {
+        self.model.changeEmojiPosition(emoji, at: location)
+    }
+    
+    func changeEmoji(action: DMEmoji.Actions) {
+        self.model.changeEmoji(action: action)
     }
     
     private var backgroundImageFetchCancellable: AnyCancellable?

@@ -9,7 +9,7 @@ import Foundation
 
 struct DMModel: Codable {
     var background = Background.blank
-    var emojis = [Emoji]()
+    var emojis = [DMEmoji]()
     
     private var uniqueEmojiId = 0
     var hasSelectedEmoji: Bool {
@@ -30,44 +30,42 @@ struct DMModel: Codable {
         self = try DMModel(json: data)
     }
     
-    struct Emoji: Identifiable, Hashable, Codable {
-        let content: String
-        var x: Int
-        var y: Int
-        var size: Int
-        var id: Int
-        
-        var isSelected = false
-        
-        fileprivate init(content: String, x: Int, y: Int, size: Int, id: Int) {
-            self.content = content
-            self.x = x
-            self.y = y
-            self.size = size
-            self.id = id
-        }
-    }
-    
     func encodeJson() throws -> Data {
         return try JSONEncoder().encode(self)
     }
     
     mutating func addEmoji(content: String, at location: (x: Int, y: Int), size: Int) {
         self.uniqueEmojiId += 1
-        self.emojis.append(Emoji(content: content, 
+        self.emojis.append(DMEmoji(content: content, 
                                  x: location.x, 
                                  y: location.y, 
                                  size: size, 
                                  id: self.uniqueEmojiId))
     }
     
-    mutating func onTapEmoji(_ emoji: Emoji) {
+    mutating func onTapEmoji(_ emoji: DMEmoji) {
         if let index = self.emojis.index(matching: emoji) {
             self.emojis[index].isSelected.toggle()
         }
     }
     
-    mutating func deleteSelectedEmoji() {
-        self.emojis = self.emojis.filter { !$0.isSelected }
+    mutating func changeEmojiPosition(_ emoji: DMEmoji, at location: (x: Int, y: Int)) {
+        if let index = self.emojis.index(matching: emoji) {
+            self.emojis[index].x = location.x
+            self.emojis[index].y = location.y
+        }
+    }
+    
+    mutating func changeEmoji(action: DMEmoji.Actions) {
+        switch action {
+        case .delete:
+            self.emojis = self.emojis.filter { !$0.isSelected }
+        case .increaseSize:
+            _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
+                .map { self.emojis[$0].size *= 2 }
+        case .decreaseSize:
+            _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
+                .map { self.emojis[$0].size /= 2 }
+        }
     }
 }
