@@ -64,6 +64,7 @@
 		1E354505546DAA5FB62761CB /* Pods-SUI-SUIUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI-SUIUITests.release.xcconfig"; path = "Target Support Files/Pods-SUI-SUIUITests/Pods-SUI-SUIUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2D1F850428D9BFB0007BD03A /* MGModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGModel.swift; sourceTree = "<group>"; };
 		2D1F850628D9BFDA007BD03A /* MGViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MGViewModel.swift; sourceTree = "<group>"; };
+		2D3E3338291931FA00B7849C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D41628728F41C0200FCD8B9 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		2D41628928F56AD300FCD8B9 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		2D41628E28F822D600FCD8B9 /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
@@ -217,6 +218,7 @@
 		2D64A45428D3AAFD00F6AECD /* SUI */ = {
 			isa = PBXGroup;
 			children = (
+				2D3E3338291931FA00B7849C /* Info.plist */,
 				2D64A45528D3AAFD00F6AECD /* SUIApp.swift */,
 				2D1F850328D9BF89007BD03A /* MemoGame */,
 				2D4D31AC28FFFEF3009E7140 /* DrawMoji */,
@@ -721,6 +723,7 @@
 				DEVELOPMENT_TEAM = GKZ7DJWHAN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -752,6 +755,7 @@
 				DEVELOPMENT_TEAM = GKZ7DJWHAN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

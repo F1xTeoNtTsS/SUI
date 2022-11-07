@@ -30,6 +30,10 @@ struct DMModel: Codable {
         self = try DMModel(json: data)
     }
     
+    func json() throws -> Data {
+        return try JSONEncoder().encode(self)
+    }
+    
     func encodeJson() throws -> Data {
         return try JSONEncoder().encode(self)
     }

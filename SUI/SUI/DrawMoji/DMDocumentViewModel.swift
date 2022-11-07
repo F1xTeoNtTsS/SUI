@@ -7,14 +7,34 @@
 
 import SwiftUI
 import Combine
+import UniformTypeIdentifiers
 
-final class DMDocumentViewModel: ObservableObject {
+final class DMDocumentViewModel: ReferenceFileDocument {
+    static var readableContentTypes = [UTType.drawmoji]
+    static var writableContentTypes = [UTType.drawmoji]
+    
+    required init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            self.model = try DMModel(json: data)
+            self.fetchBackgroundImageDataIfNecessary()
+        } else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+    }
+    
+    func snapshot(contentType: UTType) throws -> Data {
+        try model.json()
+    }
+    
+    func fileWrapper(snapshot: Data, configuration: WriteConfiguration) throws -> FileWrapper {
+        FileWrapper(regularFileWithContents: snapshot)
+    }
+    
     typealias Emoji = DMEmoji
     typealias Background = DMModel.Background
     
     @Published private(set) var model: DMModel {
         didSet {
-            scheduledAutosave()
             if model.background != oldValue.background {
                 fetchBackgroundImageDataIfNecessary()
             }
@@ -25,65 +45,54 @@ final class DMDocumentViewModel: ObservableObject {
     @Published private(set) var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
     
     init() {
-        guard let url = Autosave.url, let autosavedDrawMoji = try? DMModel(url: url) else {
-            self.model = DMModel()
-            return
-        }
-        self.model = autosavedDrawMoji
-        self.fetchBackgroundImageDataIfNecessary()
+        self.model = DMModel()
     }
     
     var emojis: [DMEmoji] { self.model.emojis }
     var background: DMModel.Background { self.model.background }
     var hasSelectedEmoji: Bool { self.model.hasSelectedEmoji }
     
-    private var autosaveTimer: Timer?
-    
-    private func scheduledAutosave() {
-        autosaveTimer?.invalidate()
-        autosaveTimer = Timer.scheduledTimer(withTimeInterval: Autosave.coalescingInterval, repeats: false) { _ in
-            self.autosave()
-        }
-    }
-    
-    private func autosave() {
-        guard let url = Autosave.url else { return }
-        self.save(to: url)
-    }
-    
-    private func save(to url: URL) {
-        do {
-            let data: Data = try self.model.encodeJson()
-            print("json = \(String(data: data, encoding: .utf8) ?? "nil")")
-            try data.write(to: url)
-            print("\(#function) success")
-        } catch let encodingError where encodingError is EncodingError {
-            print(encodingError.localizedDescription)
-        } catch {
-            print("\(error)")
-        }
-    }
-    
     // MARK: - Intents
     
-    func setBackground(_ background: Background) {
-        self.model.background = background
+    func setBackground(_ background: Background, undoManager: UndoManager?) {
+        self.undoablyPerform(operation: "Set background", with: undoManager) { 
+            self.model.background = background
+        }
     }
     
-    func addEmoji(content: String, at location: (x: Int, y: Int), size: Int) {
-        self.model.addEmoji(content: content, at: (x: location.x, y: location.y), size: size)
+    func addEmoji(content: String, at location: (x: Int, y: Int), size: Int, undoManager: UndoManager?) {
+        self.undoablyPerform(operation: "Add emoji", with: undoManager) { 
+            self.model.addEmoji(content: content, at: (x: location.x, y: location.y), size: size)
+        }
     }
     
     func onTapEmoji(_ emoji: Emoji) {
         self.model.onTapEmoji(emoji)
     }
     
-    func changeEmojiPosition(_ emoji: Emoji, at location: (x: Int, y: Int)) {
-        self.model.changeEmojiPosition(emoji, at: location)
+    func changeEmojiPosition(_ emoji: Emoji, at location: (x: Int, y: Int), undoManager: UndoManager?) {
+        self.undoablyPerform(operation: "Change emoji position", with: undoManager) { 
+            self.model.changeEmojiPosition(emoji, at: location)
+        }
     }
     
-    func changeEmoji(action: DMEmoji.Actions) {
-        self.model.changeEmoji(action: action)
+    func changeEmoji(action: DMEmoji.Actions, undoManager: UndoManager?) {
+        self.undoablyPerform(operation: "Change Size/Delete emoji", with: undoManager) { 
+            self.model.changeEmoji(action: action)
+        }
+    }
+    
+    // MARK: - Undo
+    
+    private func undoablyPerform(operation: String, with undoManager: UndoManager? = nil, doIt: () -> Void) {
+        let oldModel = self.model
+        doIt()
+        undoManager?.registerUndo(withTarget: self) { myself in
+            myself.undoablyPerform(operation: operation, with: undoManager) { 
+                myself.model = oldModel
+            }
+        }
+        undoManager?.setActionName(operation)
     }
     
     private var backgroundImageFetchCancellable: AnyCancellable?
@@ -128,4 +137,8 @@ extension DMDocumentViewModel {
         }
         static var coalescingInterval = 5.0
     }
+}
+
+extension UTType {
+    static let drawmoji = UTType(exportedAs: "F1xTeoNtTsS.DrawMoji")
 }

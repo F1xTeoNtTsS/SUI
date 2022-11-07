@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DocumentView: View {
     @ObservedObject var viewModel: DMDocumentViewModel
+    @Environment(\.undoManager) var undoManager
+    
     @State var orientation = UIDeviceOrientation.unknown
     @State private var backgroundImageFetchAlertIsShown = false
     @State private var badUrlString: String?
@@ -17,13 +19,24 @@ struct DocumentView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
-                    self.makeActionButton(action: action)
-                }
-            }
+            
             documentBody
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
+        }
+        .toolbar {
+//            HStack {
+//                ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
+//                    self.makeActionButton(action: action)
+//                }
+//                UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
+//                           redo: self.undoManager?.optionalRedoMenuItemTitle)
+//            }
+            ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
+                self.makeActionButton(action: action)
+            }
+            UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
+                       redo: self.undoManager?.optionalRedoMenuItemTitle)
+            
         }
     }
     
@@ -73,6 +86,7 @@ struct DocumentView: View {
                     self.zoomToFit(image, in: geometry.size)
                 }
             }
+            
         }
     }
     
@@ -80,12 +94,12 @@ struct DocumentView: View {
     
     private func makeActionButton(action: DMEmoji.Actions) -> some View {
         Button {
-            self.viewModel.changeEmoji(action: action)
+            self.viewModel.changeEmoji(action: action, undoManager: self.undoManager)
         } label: {
             Image(systemName: action.getSystemImageName())
                 .font(.largeTitle)
         }
-        .padding(.top).padding(.bottom)
+        .padding(.top)
         .tint(.cyan)
         .opacity(self.viewModel.hasSelectedEmoji ? 1 : 0)
     }
@@ -99,12 +113,12 @@ struct DocumentView: View {
     private func drop(providers: [NSItemProvider], at location: CGPoint, in geometry: GeometryProxy) -> Bool {
         var found = providers.loadFirstObject(ofType: URL.self) { url in
             self.autozoom = true
-            self.viewModel.setBackground(.url(url.imageURL))
+            self.viewModel.setBackground(.url(url.imageURL), undoManager: self.undoManager)
         }
         if !found {
             found = providers.loadFirstObject(ofType: UIImage.self) { image in
                 if let data = image.jpegData(compressionQuality: 1.0) {
-                    self.viewModel.setBackground(.imageData(data))
+                    self.viewModel.setBackground(.imageData(data), undoManager: self.undoManager)
                 }
             }
         }
@@ -114,7 +128,8 @@ struct DocumentView: View {
                 if let emoji = string.first, emoji.isEmoji {
                     self.viewModel.addEmoji(content: String(emoji), 
                                             at: converToEmojiCoordinates(location, in: geometry),
-                                            size: Int(self.emojiDefaultFontSize / zoomScale))
+                                            size: Int(self.emojiDefaultFontSize / zoomScale), 
+                                            undoManager: self.undoManager)
                 }
             }
         }
@@ -206,7 +221,7 @@ struct DocumentView: View {
         DragGesture()
             .onChanged({ finalDragGestureValue in
                 let coordinates = self.converToEmojiCoordinates(finalDragGestureValue.location, in: geometry)
-                self.viewModel.changeEmojiPosition(emoji, at: coordinates)
+                self.viewModel.changeEmojiPosition(emoji, at: coordinates, undoManager: self.undoManager)
             })
     }
     
