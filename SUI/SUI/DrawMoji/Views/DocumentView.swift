@@ -19,26 +19,23 @@ struct DocumentView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            
             documentBody
+            HStack {
+                NavigationLink {
+                    MGContentView(viewModel: MGViewModel())
+                } label: {
+                    Image(systemName: "questionmark.circle")
+                }.opacity(self.viewModel.emojis.count == 0 ? 0 : 1)
+                ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
+                    self.makeActionButton(action: action)
+                }
+                UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
+                           redo: self.undoManager?.optionalRedoMenuItemTitle)  
+            }
+            .tint(.cyan)
+            .font(.largeTitle)
+            .padding(.bottom, 5)
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
-        }
-        .toolbar {
-            NavigationLink {
-                MGContentView(viewModel: MGViewModel())
-            } label: { 
-                Text("Secret game? 🙀")
-                    .foregroundColor(.cyan)
-                    .font(.largeTitle)
-            }
-            .padding(.top)
-            
-            ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
-                self.makeActionButton(action: action)
-            }
-            UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
-                       redo: self.undoManager?.optionalRedoMenuItemTitle)
-            
         }
     }
     
@@ -99,10 +96,7 @@ struct DocumentView: View {
             self.viewModel.changeEmoji(action: action, undoManager: self.undoManager)
         } label: {
             Image(systemName: action.getSystemImageName())
-                .font(.largeTitle)
         }
-        .padding(.top)
-        .tint(.cyan)
         .opacity(self.viewModel.hasSelectedEmoji ? 1 : 0)
     }
     

@@ -87,14 +87,10 @@ struct UndoButton: View {
             } label: {
                 if canUndo {
                     Image(systemName: "arrow.uturn.backward.circle")
-                        .font(.largeTitle)
                 } else {
                     Image(systemName: "arrow.uturn.forward.circle")
-                        .font(.largeTitle)
                 }
             }
-            .tint(.cyan)
-            .padding(.top)
             .contextMenu {
                 if canUndo {
                     Button {
