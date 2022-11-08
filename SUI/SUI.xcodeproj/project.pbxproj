@@ -133,7 +133,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2D1F850328D9BF89007BD03A /* MemoGame */ = {
+		2D1F850328D9BF89007BD03A /* SecretMemoGame */ = {
 			isa = PBXGroup;
 			children = (
 				2D1F850428D9BFB0007BD03A /* MGModel.swift */,
@@ -142,7 +142,7 @@
 				2D6984CE28F05CED00F5024C /* Views */,
 				2D41628D28F8229100FCD8B9 /* ViewModifiers */,
 			);
-			path = MemoGame;
+			path = SecretMemoGame;
 			sourceTree = "<group>";
 		};
 		2D41628D28F8229100FCD8B9 /* ViewModifiers */ = {
@@ -220,8 +220,8 @@
 			children = (
 				2D3E3338291931FA00B7849C /* Info.plist */,
 				2D64A45528D3AAFD00F6AECD /* SUIApp.swift */,
-				2D1F850328D9BF89007BD03A /* MemoGame */,
 				2D4D31AC28FFFEF3009E7140 /* DrawMoji */,
+				2D1F850328D9BF89007BD03A /* SecretMemoGame */,
 				2D4D31BA29002A42009E7140 /* Helpers */,
 				2D4D31B529000A28009E7140 /* Extensions */,
 				2D64A45928D3AAFE00F6AECD /* Assets.xcassets */,

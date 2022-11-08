@@ -24,13 +24,15 @@ struct DocumentView: View {
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
         }
         .toolbar {
-//            HStack {
-//                ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
-//                    self.makeActionButton(action: action)
-//                }
-//                UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
-//                           redo: self.undoManager?.optionalRedoMenuItemTitle)
-//            }
+            NavigationLink {
+                MGContentView(viewModel: MGViewModel())
+            } label: { 
+                Text("Secret game? 🙀")
+                    .foregroundColor(.cyan)
+                    .font(.largeTitle)
+            }
+            .padding(.top)
+            
             ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
                 self.makeActionButton(action: action)
             }
