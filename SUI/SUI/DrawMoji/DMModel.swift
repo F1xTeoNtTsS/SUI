@@ -66,10 +66,10 @@ struct DMModel: Codable {
             self.emojis = self.emojis.filter { !$0.isSelected }
         case .increaseSize:
             _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
-                .map { self.emojis[$0].size *= 2 }
+                .map { self.emojis[$0].size += 20 }
         case .decreaseSize:
             _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
-                .map { self.emojis[$0].size /= 2 }
+                .map { self.emojis[$0].size -= 20 }
         }
     }
 }

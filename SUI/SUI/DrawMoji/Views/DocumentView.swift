@@ -107,9 +107,10 @@ struct DocumentView: View {
                     ProgressView().scaleEffect(2.0)
                 }
                 ForEach(self.viewModel.emojis) { emoji in
-                    Text(emoji.content)
+                    Text(" \(emoji.content) ")
                         .font(.system(size: self.fontSize(for: emoji)))
                         .scaleEffect(zoomScale)
+                        .fixedSize(horizontal: true, vertical: false)
                         .position(self.position(for: emoji, in: geometry))
                         .memofy(isSelected: emoji.isSelected)
                         .onTapGesture {
