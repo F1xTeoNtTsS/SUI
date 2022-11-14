@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct DocumentView: View {
+    enum BackgroundPickerType: Identifiable {
+        case camera
+        case library
+        var id: BackgroundPickerType { self }
+    }
+    
     @ObservedObject var viewModel: DMDocumentViewModel
     @Environment(\.undoManager) var undoManager
     
     @State var orientation = UIDeviceOrientation.unknown
     @State private var backgroundImageFetchAlertIsShown = false
     @State private var badUrlString: String?
+    @State private var backgroundPicker: BackgroundPickerType?
     
     @ScaledMetric var emojiDefaultFontSize: CGFloat = 40
     
@@ -47,7 +54,6 @@ struct DocumentView: View {
             .font(.largeTitle)
             .padding(.bottom, 5)
             
-            
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
         }
         .toolbar {
@@ -57,8 +63,18 @@ struct DocumentView: View {
                 } label: {
                     Image(systemName: "questionmark.circle")
                 }
-                AnimatedActionButton(title: "Paste background", systemImage: "photo.circle") { 
-                    pasteBackground()
+                if CameraManager.isAvailable {
+                    AnimatedActionButton(title: "Make photo", systemImage: "camera.circle") { 
+                        self.backgroundPicker = .camera
+                    }
+                }
+                if PhotoLibraryManager.isAvailable {
+                    AnimatedActionButton(title: "Choose photo", systemImage: "photo.circle") { 
+                        self.backgroundPicker = .library
+                    }
+                }
+                AnimatedActionButton(title: "Paste background", systemImage: "doc.circle") { 
+                    pasteBackgroundFromPasteboard()
                 }
                 
             }
@@ -66,17 +82,22 @@ struct DocumentView: View {
             .padding(.top)
         }
         .tint(.cyan)
+        .sheet(item: $backgroundPicker) { pickerType in
+            switch pickerType {
+            case .camera: CameraManager(handlePickedImage: { image in handlePickedBackgroundImage(image) })
+            case .library: PhotoLibraryManager(handlePickedImage: { image in handlePickedBackgroundImage(image) })
+            }
+        }
     }
     
     private var documentBody: some View {
         GeometryReader { geometry in
             ZStack {
-                Color.white.overlay(
-                    OptionalImage(uiImage: self.viewModel.backgroundImage)
-                        .scaleEffect(zoomScale)
-                        .position(convertFromEmojiCoordinate((0, 0), in: geometry))
-                )
-                .gesture(doubleTapToZoom(in: geometry.size))
+                Color.white
+                OptionalImage(uiImage: self.viewModel.backgroundImage)
+                    .scaleEffect(zoomScale)
+                    .position(convertFromEmojiCoordinate((0, 0), in: geometry))
+                    .gesture(doubleTapToZoom(in: geometry.size))
                 if self.viewModel.backgroundImage == nil {
                     Text("Drop your image here")
                         .tint(.gray)
@@ -125,8 +146,20 @@ struct DocumentView: View {
     
     @State private var autozoom = false
     
-    private func pasteBackground() {
-        
+    private func pasteBackgroundFromPasteboard() {
+        if let imageData = UIPasteboard.general.image?.jpegData(compressionQuality: 1.0) {
+            self.viewModel.setBackground(.imageData(imageData), undoManager: self.undoManager)
+        } else if let url = UIPasteboard.general.url?.imageURL {
+            self.viewModel.setBackground(.url(url), undoManager: self.undoManager)
+        }
+    }
+    
+    private func handlePickedBackgroundImage(_ image: UIImage?) {
+        self.autozoom = true
+        if let imageData = image?.jpegData(compressionQuality: 1.0) {
+            self.viewModel.setBackground(.imageData(imageData), undoManager: self.undoManager)
+        }
+        self.backgroundPicker = nil
     }
     
     private func makeActionButton(action: DMEmoji.Actions) -> some View {
@@ -185,7 +218,7 @@ struct DocumentView: View {
     private func convertFromEmojiCoordinate(_ location: (x: Int, y: Int), in geometry: GeometryProxy) -> CGPoint {
         let center = geometry.frame(in: .local).center
         return CGPoint(
-            x: center.x + CGFloat(location.x) * zoomScale + self.panOffset.width, 
+            x: center.x + CGFloat(location.x) * zoomScale + self.panOffset.width,
             y: center.y + CGFloat(location.y) * zoomScale + self.panOffset.height)
     }
     
