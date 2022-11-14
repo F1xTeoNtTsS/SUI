@@ -20,8 +20,9 @@ struct PaletteChooser: View {
     @State var paletteManaging = false
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             self.paletteControlButton
+                .padding(.bottom)
             self.makePaletteView(for: self.store.palettes[choosenPaletteIndex])
         }
         .padding([.leading, .bottom])
@@ -76,7 +77,6 @@ struct PaletteChooser: View {
     
     private func makePaletteView(for palette: Palette) -> some View {
         HStack {
-            Text(palette.name)
             ScrollEmojiView(emojis: palette.emojis)
                 .font(emojiFont)
         }
@@ -84,6 +84,7 @@ struct PaletteChooser: View {
         .transition(self.rollTransition)
         .popover(isPresented: $paletteEditing) { 
             PaletteEditor(palette: $store.palettes[self.choosenPaletteIndex])
+                .wrapInNavigationView { paletteEditing = false }
         }
         .sheet(isPresented: $paletteManaging) { 
             PaletteManager()

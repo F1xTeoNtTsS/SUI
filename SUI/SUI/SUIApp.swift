@@ -15,11 +15,9 @@ struct SUIApp: App {
     
     var body: some Scene {
         DocumentGroup(newDocument: { DMDocumentViewModel() }) { config in
-            if #available(iOS 16.0, *) {
-                DocumentView(viewModel: config.document)
-                    .toolbarRole(.navigationStack)
-                    .environmentObject(paletteStore)
-            }
+            DocumentView(viewModel: config.document)
+                .toolbarRole(.navigationStack)
+                .environmentObject(paletteStore)
         }
     }
     

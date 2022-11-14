@@ -33,18 +33,14 @@ struct PaletteManager: View {
                     store.palettes.move(fromOffsets: indexSet, toOffset: newIndexSet)
                 }
             }
-            .toolbar { 
-                ToolbarItem { EditButton() }
-                ToolbarItem(placement: .navigationBarLeading) { 
-                    if isPresented, UIDevice.current.userInterfaceIdiom != .pad {
-                        Button("Close") {
-                            self.dismiss()
-                        }
-                    }
-                }
-            }
             .navigationTitle("Manage palettes")
             .navigationBarTitleDisplayMode(.inline)
+            .dismissable { 
+                dismiss()
+            }
+            .toolbar { 
+                ToolbarItem { EditButton() }
+            }
             .environment(\.editMode, $editMode)
         }
     }

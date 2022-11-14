@@ -20,23 +20,52 @@ struct DocumentView: View {
     var body: some View {
         VStack(spacing: 0) {
             documentBody
-            HStack {
-                NavigationLink {
-                    MGContentView(viewModel: MGViewModel())
-                } label: {
-                    Image(systemName: "questionmark.circle")
-                }.opacity(self.viewModel.emojis.count == 0 ? 0 : 1)
+            HStack(spacing: 0) {
                 ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
                     self.makeActionButton(action: action)
                 }
-                UndoButton(undo: self.undoManager?.optionalUndoMenuItemTitle,
-                           redo: self.undoManager?.optionalRedoMenuItemTitle)  
+                .padding(.leading)
+                Spacer(minLength: 20)
+                HStack(spacing: 0) {
+                    if let um = self.undoManager {
+                        if um.canUndo {
+                            AnimatedActionButton(systemImage: "arrow.uturn.backward.circle") { 
+                                um.undo()
+                            }
+                        }
+                        if um.canRedo {
+                            AnimatedActionButton(systemImage: "arrow.uturn.forward.circle") { 
+                                um.redo()
+                            }
+                        }
+                    }
+                }
+                .padding(.trailing)
+                
             }
             .tint(.cyan)
             .font(.largeTitle)
             .padding(.bottom, 5)
+            
+            
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
         }
+        .toolbar {
+            HStack(spacing: 0) {
+                NavigationLink {
+                    MGContentView(viewModel: MGViewModel())
+                } label: {
+                    Image(systemName: "questionmark.circle")
+                }
+                AnimatedActionButton(title: "Paste background", systemImage: "photo.circle") { 
+                    pasteBackground()
+                }
+                
+            }
+            .font(.title)
+            .padding(.top)
+        }
+        .tint(.cyan)
     }
     
     private var documentBody: some View {
@@ -48,6 +77,11 @@ struct DocumentView: View {
                         .position(convertFromEmojiCoordinate((0, 0), in: geometry))
                 )
                 .gesture(doubleTapToZoom(in: geometry.size))
+                if self.viewModel.backgroundImage == nil {
+                    Text("Drop your image here")
+                        .tint(.gray)
+                        .opacity(0.5)
+                }
                 if self.viewModel.backgroundImageFetchStatus == .fetching {
                     ProgressView().scaleEffect(2.0)
                 }
@@ -90,6 +124,10 @@ struct DocumentView: View {
     }
     
     @State private var autozoom = false
+    
+    private func pasteBackground() {
+        
+    }
     
     private func makeActionButton(action: DMEmoji.Actions) -> some View {
         Button {
