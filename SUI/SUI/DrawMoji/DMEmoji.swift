@@ -14,11 +14,11 @@ struct DMEmoji: Identifiable, Hashable, Codable {
         func getSystemImageName() -> String {
             switch self {
             case .increaseSize:
-                return "plus.circle"
+                return SystemImageName.increaseEmojiSizeButton
             case .decreaseSize:
-                return "minus.circle"
+                return SystemImageName.decreaseEmojiSizeButton
             case .delete:
-                return "trash.circle"
+                return SystemImageName.deleteEmojiButton
             }
         }
     }

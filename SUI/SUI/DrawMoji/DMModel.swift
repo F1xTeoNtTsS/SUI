@@ -39,7 +39,7 @@ struct DMModel: Codable {
     }
     
     mutating func addEmoji(content: String, at location: (x: Int, y: Int), size: Int) {
-        self.uniqueEmojiId += 1
+        self.uniqueEmojiId += Constants.additionalEmojiId
         self.emojis.append(DMEmoji(content: content, 
                                  x: location.x, 
                                  y: location.y, 
@@ -66,10 +66,15 @@ struct DMModel: Codable {
             self.emojis = self.emojis.filter { !$0.isSelected }
         case .increaseSize:
             _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
-                .map { self.emojis[$0].size += 20 }
+                .map { self.emojis[$0].size += Constants.changingSizeStepNumber }
         case .decreaseSize:
             _ = self.emojis.indices.filter { self.emojis[$0].isSelected }
-                .map { self.emojis[$0].size -= 20 }
+                .map { self.emojis[$0].size -= Constants.changingSizeStepNumber }
         }
+    }
+    
+    private enum Constants {
+        static let changingSizeStepNumber = 20
+        static let additionalEmojiId = 1
     }
 }

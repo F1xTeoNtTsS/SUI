@@ -41,6 +41,7 @@
 		2DB59EC229092FE300A361EF /* PaletteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB59EC129092FE300A361EF /* PaletteEditor.swift */; };
 		2DE3F32E29223E170060A245 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE3F32D29223E170060A245 /* CameraManager.swift */; };
 		2DE3F33029224D430060A245 /* PhotoLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE3F32F29224D430060A245 /* PhotoLibraryManager.swift */; };
+		2DE3F3322923C0EC0060A245 /* SystemImageName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE3F3312923C0EC0060A245 /* SystemImageName.swift */; };
 		B0B79547FF613E194B1661AB /* Pods_SUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65FF96ABF3EFA2126FF86C0 /* Pods_SUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +100,7 @@
 		2DB59EC129092FE300A361EF /* PaletteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteEditor.swift; sourceTree = "<group>"; };
 		2DE3F32D29223E170060A245 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		2DE3F32F29224D430060A245 /* PhotoLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryManager.swift; sourceTree = "<group>"; };
+		2DE3F3312923C0EC0060A245 /* SystemImageName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemImageName.swift; sourceTree = "<group>"; };
 		7AB7EACEC887AC0CEB7D5832 /* Pods-SUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUITests/Pods-SUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81491920A4045E3430728D43 /* Pods-SUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI.debug.xcconfig"; path = "Target Support Files/Pods-SUI/Pods-SUI.debug.xcconfig"; sourceTree = "<group>"; };
 		8349927BA54734D6A4606725 /* Pods-SUI-SUIUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUI-SUIUITests.debug.xcconfig"; path = "Target Support Files/Pods-SUI-SUIUITests/Pods-SUI-SUIUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				2D6984CC28EAD83700F5024C /* EmojiStock.swift */,
+				2DE3F3312923C0EC0060A245 /* SystemImageName.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				2D64A45828D3AAFD00F6AECD /* MGContentView.swift in Sources */,
 				2DE3F32E29223E170060A245 /* CameraManager.swift in Sources */,
 				2D4D31B929000BEB009E7140 /* UtilityViews.swift in Sources */,
+				2DE3F3322923C0EC0060A245 /* SystemImageName.swift in Sources */,
 				2D6984CD28EAD83700F5024C /* EmojiStock.swift in Sources */,
 				2DB59EC229092FE300A361EF /* PaletteEditor.swift in Sources */,
 				2DB59EBA2902BC8C00A361EF /* DeviceRotationViewModifier.swift in Sources */,

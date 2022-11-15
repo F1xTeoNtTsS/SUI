@@ -32,7 +32,7 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     }
     
     private func adaptiveGridItem(minWidth: CGFloat) -> GridItem {
-        GridItem(.adaptive(minimum: minWidth), spacing: 0)
+        GridItem(.adaptive(minimum: minWidth), spacing: .zero)
     }
     
     private func widthThatFits(itemCount: Int, in size: CGSize, itemAspectRatio: CGFloat) -> CGFloat {

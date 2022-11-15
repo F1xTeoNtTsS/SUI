@@ -15,10 +15,10 @@ struct MGCardView: View {
     private var borderColor: Color {
         var color: Color = .cyan
         if self.card.isMatched {
-            color = .green.opacity(0.5)
+            color = .green.opacity(Constants.borderColorOpacity)
         }
         if self.card.isNotGuessed {
-            color = .red.opacity(0.5)
+            color = .red.opacity(Constants.borderColorOpacity)
         }
         return color
     }
@@ -27,9 +27,9 @@ struct MGCardView: View {
         GeometryReader(content: { geometry in
             ZStack {
                 Text(self.card.content)
-                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                    .animation(Animation.linear(duration: 1)
-                        .repeatCount(1), value: card.isMatched)
+                    .rotationEffect(Angle.degrees(card.isMatched ? Constants.cardMatchedAngleDegree : .zero))
+                    .animation(Animation.linear(duration: Constants.animationDuration)
+                        .repeatCount(Constants.animationRepeatCount), value: card.isMatched)
                     .font(makeFontForContent(size: geometry.size))
             }
             .cardify(isMatched: self.card.isMatched,
@@ -47,5 +47,9 @@ struct MGCardView: View {
         static let borderLineWidth: CGFloat = 4
         static let shapeOpacity: Double = 0
         static let fontRatioMultiplier: Double = 0.7
+        static let cardMatchedAngleDegree: Double = 360
+        static let animationDuration: Double = 1
+        static let animationRepeatCount: Int = 1
+        static let borderColorOpacity: Double = 0.5
     }
 }

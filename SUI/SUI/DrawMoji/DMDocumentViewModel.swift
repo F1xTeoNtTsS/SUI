@@ -10,8 +10,27 @@ import Combine
 import UniformTypeIdentifiers
 
 final class DMDocumentViewModel: ReferenceFileDocument {
+    typealias Emoji = DMEmoji
+    typealias Background = DMModel.Background
+    
     static var readableContentTypes = [UTType.drawmoji]
     static var writableContentTypes = [UTType.drawmoji]
+    
+    @Published private(set) var backgroundImage: UIImage?
+    @Published private(set) var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
+    @Published private(set) var model: DMModel {
+        didSet {
+            if self.model.background != oldValue.background {
+                fetchBackgroundImageDataIfNecessary()
+            }
+        }
+    }
+    
+    private var backgroundImageFetchCancellable: AnyCancellable?
+    
+    init() {
+        self.model = DMModel()
+    }
     
     required init(configuration: ReadConfiguration) throws {
         if let data = configuration.file.regularFileContents {
@@ -22,6 +41,10 @@ final class DMDocumentViewModel: ReferenceFileDocument {
         }
     }
     
+    var emojis: [DMEmoji] { self.model.emojis }
+    var background: DMModel.Background { self.model.background }
+    var hasSelectedEmoji: Bool { self.model.hasSelectedEmoji }
+    
     func snapshot(contentType: UTType) throws -> Data {
         try model.json()
     }
@@ -30,38 +53,16 @@ final class DMDocumentViewModel: ReferenceFileDocument {
         FileWrapper(regularFileWithContents: snapshot)
     }
     
-    typealias Emoji = DMEmoji
-    typealias Background = DMModel.Background
-    
-    @Published private(set) var model: DMModel {
-        didSet {
-            if model.background != oldValue.background {
-                fetchBackgroundImageDataIfNecessary()
-            }
-        }
-    }
-    
-    @Published private(set) var backgroundImage: UIImage?
-    @Published private(set) var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
-    
-    init() {
-        self.model = DMModel()
-    }
-    
-    var emojis: [DMEmoji] { self.model.emojis }
-    var background: DMModel.Background { self.model.background }
-    var hasSelectedEmoji: Bool { self.model.hasSelectedEmoji }
-    
     // MARK: - Intents
     
     func setBackground(_ background: Background, undoManager: UndoManager?) {
-        self.undoablyPerform(operation: "Set background", with: undoManager) { 
+        self.undoablyPerform(operation: Constants.setBackgroundOperationName, with: undoManager) { 
             self.model.background = background
         }
     }
     
     func addEmoji(content: String, at location: (x: Int, y: Int), size: Int, undoManager: UndoManager?) {
-        self.undoablyPerform(operation: "Add emoji", with: undoManager) { 
+        self.undoablyPerform(operation: Constants.addEmojiOperationName, with: undoManager) { 
             self.model.addEmoji(content: content, at: (x: location.x, y: location.y), size: size)
         }
     }
@@ -71,13 +72,13 @@ final class DMDocumentViewModel: ReferenceFileDocument {
     }
     
     func changeEmojiPosition(_ emoji: Emoji, at location: (x: Int, y: Int), undoManager: UndoManager?) {
-        self.undoablyPerform(operation: "Change emoji position", with: undoManager) { 
+        self.undoablyPerform(operation: Constants.changeEmojiPositionOperationName, with: undoManager) { 
             self.model.changeEmojiPosition(emoji, at: location)
         }
     }
     
     func changeEmoji(action: DMEmoji.Actions, undoManager: UndoManager?) {
-        self.undoablyPerform(operation: "Change Size/Delete emoji", with: undoManager) { 
+        self.undoablyPerform(operation: Constants.changeEmojiOperationName, with: undoManager) { 
             self.model.changeEmoji(action: action)
         }
     }
@@ -95,8 +96,6 @@ final class DMDocumentViewModel: ReferenceFileDocument {
         undoManager?.setActionName(operation)
     }
     
-    private var backgroundImageFetchCancellable: AnyCancellable?
-    
     private func fetchBackgroundImageDataIfNecessary() {
         self.backgroundImage = nil
         switch self.model.background {
@@ -111,7 +110,7 @@ final class DMDocumentViewModel: ReferenceFileDocument {
                 .replaceError(with: nil)
                 .receive(on: DispatchQueue.main)
             
-            backgroundImageFetchCancellable = publisher
+            self.backgroundImageFetchCancellable = publisher
                 .sink { [weak self] image in 
                     self?.backgroundImage = image
                     self?.backgroundImageFetchStatus = (image == nil) ? .failed(url) : .idle
@@ -119,6 +118,13 @@ final class DMDocumentViewModel: ReferenceFileDocument {
         case .imageData(let data):
             self.backgroundImage = UIImage(data: data)
         }
+    }
+    
+    private enum Constants {
+        static let setBackgroundOperationName = "Set background"
+        static let addEmojiOperationName = "Add emoji"
+        static let changeEmojiPositionOperationName = "Change emoji position"
+        static let changeEmojiOperationName = "Change Size/Delete emoji"
     }
 }
 
@@ -132,8 +138,8 @@ extension DMDocumentViewModel {
     private struct Autosave {
         static let filename = "Autosave.DrawMoji"
         static var url: URL? {
-            let documentDerectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-            return documentDerectory?.appendingPathComponent(filename, conformingTo: .data)
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return documentDirectory?.appendingPathComponent(filename, conformingTo: .data)
         }
         static var coalescingInterval = 5.0
     }

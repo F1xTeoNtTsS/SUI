@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PaletteChooser: View {
-    var emojiFontSize: CGFloat = 40
+    var emojiFontSize = Constants.emojiFontSize
     var emojiFont: Font { .system(size: emojiFontSize) }
     
     @EnvironmentObject var store: PaletteStore
@@ -20,7 +20,7 @@ struct PaletteChooser: View {
     @State var paletteManaging = false
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: .zero) {
             self.paletteControlButton
                 .padding(.bottom)
             self.makePaletteView(for: self.store.palettes[choosenPaletteIndex])
@@ -36,7 +36,7 @@ struct PaletteChooser: View {
             }
             
         } label: {
-            Image(systemName: "paintpalette")
+            Image(systemName: SystemImageName.paletteControlButton)
         }
         .tint(.cyan)
         .font(self.emojiFont)
@@ -45,17 +45,17 @@ struct PaletteChooser: View {
     
     @ViewBuilder
     private var contextMenu: some View {
-        AnimatedActionButton(title: "Edit", systemImage: "pencil") { 
+        AnimatedActionButton(title: "Edit", systemImage: SystemImageName.paletteEditButton) { 
             self.paletteEditing = true
         }
-        AnimatedActionButton(title: "New", systemImage: "plus.circle") { 
+        AnimatedActionButton(title: "New", systemImage: SystemImageName.paletteNewButton) { 
             store.addPalette(name: "New", emojis: "", at: self.choosenPaletteIndex)
             self.paletteEditing = true
         }
-        AnimatedActionButton(title: "Delete", systemImage: "minus.circle") { 
+        AnimatedActionButton(title: "Delete", systemImage: SystemImageName.paletteDeleteButton) { 
             self.choosenPaletteIndex = store.removePalette(at: self.choosenPaletteIndex)
         }
-        AnimatedActionButton(title: "Manager", systemImage: "slider.vertical.3") { 
+        AnimatedActionButton(title: "Manager", systemImage: SystemImageName.paletteManageButton) { 
             self.paletteManaging = true
         }
         goToMenu
@@ -71,7 +71,7 @@ struct PaletteChooser: View {
                 }
             }
         } label: {
-            Label("Go To", image: "text.insert")
+            Text("Go To ...")
         }
     }
     
@@ -92,7 +92,11 @@ struct PaletteChooser: View {
     }
     
     private var rollTransition: AnyTransition {
-        AnyTransition.asymmetric(insertion: .offset(x: 0, y: self.emojiFontSize), 
-                                 removal: .offset(x: 0, y: -self.emojiFontSize))
-    }    
+        AnyTransition.asymmetric(insertion: .offset(x: .zero, y: self.emojiFontSize), 
+                                 removal: .offset(x: .zero, y: -self.emojiFontSize))
+    }
+    
+    private enum Constants {
+        static let emojiFontSize: CGFloat = 40
+    }
 }

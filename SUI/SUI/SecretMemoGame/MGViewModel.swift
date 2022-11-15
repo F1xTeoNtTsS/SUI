@@ -60,17 +60,17 @@ final class MGViewModel: ObservableObject {
     func getThemeImageName(theme: Theme) -> String {
         switch theme {
         case .faces:
-            return "face.smiling"
+            return SystemImageName.faceThemeIcon
         case .flags:
-            return "flag.circle"
+            return SystemImageName.flagsThemeIcon
         case .vehicles:
-            return "car.circle"
+            return SystemImageName.vehiclesThemeIcon
         case .animals:
-            return "pawprint.circle"
+            return SystemImageName.animalsThemeIcon
         case .food:
-            return "fork.knife.circle"
+            return SystemImageName.foodThemeIcon
         case .devices:
-            return "tv.circle"
+            return SystemImageName.devicesThemeIcon
         }
     }
     

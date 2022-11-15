@@ -17,7 +17,7 @@ struct PaletteEditor: View {
             self.removeEmojiSection
         }
         .navigationTitle("Edit '\(palette.name)' palette")
-        .frame(minWidth: 300, minHeight: 300)
+        .frame(minWidth: Constants.bodyMinSize, minHeight: Constants.bodyMinSize)
     }
     
     private var nameSection: some View {
@@ -44,7 +44,7 @@ struct PaletteEditor: View {
     private var removeEmojiSection: some View {
         Section(header: Text("Remove Emoji")) {
             let emojis = palette.emojis.removingDuplicateCharacters.map { String($0) }
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 40))]) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: Constants.minGridItemSize))]) {
                 ForEach(emojis, id: \.self) { emoji in
                     Text(emoji)
                         .onTapGesture {
@@ -52,7 +52,7 @@ struct PaletteEditor: View {
                         }
                 }
             }
-            .font(.system(size: 40))
+            .font(.system(size: Constants.removeSectionFontSize))
         }
     }
     
@@ -68,5 +68,11 @@ struct PaletteEditor: View {
         withAnimation {
             self.palette.emojis.removeAll(where: { String($0) == emoji })
         }
+    }
+    
+    private enum Constants {
+        static let bodyMinSize: CGFloat = 300
+        static let removeSectionFontSize: CGFloat = 40
+        static let minGridItemSize: CGFloat = 40
     }
 }

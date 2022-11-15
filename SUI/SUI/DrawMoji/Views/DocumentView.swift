@@ -8,40 +8,34 @@
 import SwiftUI
 
 struct DocumentView: View {
-    enum BackgroundPickerType: Identifiable {
-        case camera
-        case library
-        var id: BackgroundPickerType { self }
-    }
-    
     @ObservedObject var viewModel: DMDocumentViewModel
     @Environment(\.undoManager) var undoManager
     
-    @State var orientation = UIDeviceOrientation.unknown
     @State private var backgroundImageFetchAlertIsShown = false
     @State private var badUrlString: String?
     @State private var backgroundPicker: BackgroundPickerType?
+    @State private var autozoom = false
     
-    @ScaledMetric var emojiDefaultFontSize: CGFloat = 40
+    @ScaledMetric var emojiDefaultFontSize = Constants.emojiDefaultFontSize
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: .zero) {
             documentBody
-            HStack(spacing: 0) {
+            HStack(spacing: .zero) {
                 ForEach(DMEmoji.Actions.allCases, id: \.self) { action in
                     self.makeActionButton(action: action)
                 }
                 .padding(.leading)
-                Spacer(minLength: 20)
-                HStack(spacing: 0) {
+                Spacer(minLength: Constants.spacerMinLenght)
+                HStack(spacing: .zero) {
                     if let um = self.undoManager {
                         if um.canUndo {
-                            AnimatedActionButton(systemImage: "arrow.uturn.backward.circle") { 
+                            AnimatedActionButton(systemImage: SystemImageName.undoOperationButton) { 
                                 um.undo()
                             }
                         }
                         if um.canRedo {
-                            AnimatedActionButton(systemImage: "arrow.uturn.forward.circle") { 
+                            AnimatedActionButton(systemImage: SystemImageName.redoOperationButton) { 
                                 um.redo()
                             }
                         }
@@ -52,28 +46,31 @@ struct DocumentView: View {
             }
             .tint(.cyan)
             .font(.largeTitle)
-            .padding(.bottom, 5)
+            .padding(.bottom, Constants.actionButtonsBottomSpacing)
             
             PaletteChooser(emojiFontSize: self.emojiDefaultFontSize)
         }
         .toolbar {
-            HStack(spacing: 0) {
+            HStack(spacing: .zero) {
                 NavigationLink {
                     MGContentView(viewModel: MGViewModel())
                 } label: {
-                    Image(systemName: "questionmark.circle")
+                    Image(systemName: SystemImageName.secretGameButton)
                 }
                 if CameraManager.isAvailable {
-                    AnimatedActionButton(title: "Make photo", systemImage: "camera.circle") { 
+                    AnimatedActionButton(title: "", 
+                                         systemImage: SystemImageName.backgroundFromCameraButton) { 
                         self.backgroundPicker = .camera
                     }
                 }
                 if PhotoLibraryManager.isAvailable {
-                    AnimatedActionButton(title: "Choose photo", systemImage: "photo.circle") { 
+                    AnimatedActionButton(title: "", 
+                                         systemImage: SystemImageName.backgroundFromPhotoLibraryButton) { 
                         self.backgroundPicker = .library
                     }
                 }
-                AnimatedActionButton(title: "Paste background", systemImage: "doc.circle") { 
+                AnimatedActionButton(title: "", 
+                                     systemImage: SystemImageName.backgroundFromPasteboardButton) { 
                     pasteBackgroundFromPasteboard()
                 }
                 
@@ -96,15 +93,10 @@ struct DocumentView: View {
                 Color.white
                 OptionalImage(uiImage: self.viewModel.backgroundImage)
                     .scaleEffect(zoomScale)
-                    .position(convertFromEmojiCoordinate((0, 0), in: geometry))
+                    .position(convertFromEmojiCoordinate(Constants.backgroundCoordinate, in: geometry))
                     .gesture(doubleTapToZoom(in: geometry.size))
-                if self.viewModel.backgroundImage == nil {
-                    Text("Drop your image here")
-                        .tint(.gray)
-                        .opacity(0.5)
-                }
                 if self.viewModel.backgroundImageFetchStatus == .fetching {
-                    ProgressView().scaleEffect(2.0)
+                    ProgressView().scaleEffect(Constants.progressViewScaleEffect)
                 }
                 ForEach(self.viewModel.emojis) { emoji in
                     Text(" \(emoji.content) ")
@@ -145,10 +137,8 @@ struct DocumentView: View {
         }
     }
     
-    @State private var autozoom = false
-    
     private func pasteBackgroundFromPasteboard() {
-        if let imageData = UIPasteboard.general.image?.jpegData(compressionQuality: 1.0) {
+        if let imageData = UIPasteboard.general.image?.jpegData(compressionQuality: Constants.imageCompressionQuality) {
             self.viewModel.setBackground(.imageData(imageData), undoManager: self.undoManager)
         } else if let url = UIPasteboard.general.url?.imageURL {
             self.viewModel.setBackground(.url(url), undoManager: self.undoManager)
@@ -157,7 +147,7 @@ struct DocumentView: View {
     
     private func handlePickedBackgroundImage(_ image: UIImage?) {
         self.autozoom = true
-        if let imageData = image?.jpegData(compressionQuality: 1.0) {
+        if let imageData = image?.jpegData(compressionQuality: Constants.imageCompressionQuality) {
             self.viewModel.setBackground(.imageData(imageData), undoManager: self.undoManager)
         }
         self.backgroundPicker = nil
@@ -185,7 +175,7 @@ struct DocumentView: View {
         }
         if !found {
             found = providers.loadFirstObject(ofType: UIImage.self) { image in
-                if let data = image.jpegData(compressionQuality: 1.0) {
+                if let data = image.jpegData(compressionQuality: Constants.imageCompressionQuality) {
                     self.viewModel.setBackground(.imageData(data), undoManager: self.undoManager)
                 }
             }
@@ -274,8 +264,8 @@ struct DocumentView: View {
     
     private func zoomToFit(_ image: UIImage?, in size: CGSize) { 
         if let image, image.size.width > 0, image.size.height > 0, size.width > 0, size.height > 0 {
-            let hZoom = (image.size.width / size.width) * 1.5
-            let vZoom = (image.size.height / size.height) * 1.5
+            let hZoom = (image.size.width / size.width) * Constants.zoomMultiplier
+            let vZoom = (image.size.height / size.height) * Constants.zoomMultiplier
             withAnimation { 
                 self.steadyStatePanOffset = .zero
                 self.steadyStateZoomScale = min(hZoom, vZoom)
@@ -298,5 +288,23 @@ struct DocumentView: View {
             .onEnded {
                 self.viewModel.onTapEmoji(emoji)
             }
+    }
+    
+    private enum Constants {
+        static let emojiDefaultFontSize: CGFloat = 40
+        static let spacerMinLenght: CGFloat = 0
+        static let actionButtonsBottomSpacing: CGFloat = 5
+        static let backgroundCoordinate = (0, 0)
+        static let progressViewScaleEffect = 2.0
+        static let imageCompressionQuality = 1.0
+        static let zoomMultiplier = 1.5
+    }
+}
+
+extension DocumentView {
+    enum BackgroundPickerType: Identifiable {
+        case camera
+        case library
+        var id: BackgroundPickerType { self }
     }
 }

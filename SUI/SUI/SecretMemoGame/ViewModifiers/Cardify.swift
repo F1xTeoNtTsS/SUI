@@ -20,7 +20,7 @@ struct Cardify: Animatable, ViewModifier {
 
     init(isMatched: Bool, isFaceUp: Bool, borderColor: Color) {
         self.isMatched = isMatched
-        self.rotation = isFaceUp ? 0 : 180
+        self.rotation = isFaceUp ? .zero : Constants.isFaceUpCardRotationDegree
         self.borderColor = borderColor
     }
 
@@ -28,23 +28,26 @@ struct Cardify: Animatable, ViewModifier {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: Constants.shapeCornerRadius)
 
-            if self.rotation < 90 {
+            if self.rotation < Constants.rotationDegree {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: Constants.borderLineWidth)
                     .foregroundColor(self.borderColor)
             } else if self.isMatched {
-                shape.fill().foregroundColor(.green).opacity(0.2)
+                shape.fill().foregroundColor(.green).opacity(Constants.isMatchedCardOpacity)
             } else {
                 shape.foregroundColor(.cyan)
             }
-            content.opacity(self.rotation < 90 ? 1 : 0)
+            content.opacity(self.rotation < Constants.rotationDegree ? 1 : .zero)
         }
-        .rotation3DEffect(Angle(degrees: rotation), axis: (0, 1, 0))
+        .rotation3DEffect(Angle(degrees: rotation), axis: (.zero, 1, .zero))
     }
 
     private enum Constants {
         static let shapeCornerRadius: CGFloat = 10
         static let borderLineWidth: CGFloat = 4
+        static let isMatchedCardOpacity: Double = 0.2
+        static let isFaceUpCardRotationDegree: Double = 180
+        static let rotationDegree: Double = 90
     }
 }
 
